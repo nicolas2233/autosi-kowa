@@ -10,7 +10,7 @@ async function main(){
     console.log('server listening on port: 4000')
     console.log('el servidor quedo enlazado')
     } catch (error) {
-        console.log('no se pudo conectar con el servidor')
+        console.log('no se pudo conectar con el servidor',error)
     }   
 }
 

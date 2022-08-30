@@ -18,6 +18,9 @@ app.use(express.json())
 //     projectId: "yuyOW4QgeWLTcUwk"
 // });
 const specs = swaggerJSDoc(options)
+app.get("/", function (req,res){
+    res.json({mensagge:"hola mundo"})
+})
 app.use(routas)
 app.use('/docs', swagerUI.serve, swagerUI.setup(specs))
 export default app
