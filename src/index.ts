@@ -4,7 +4,7 @@ import {sequelize} from './db'
 //import { createRole } from './component/roles/controller'
 async function main(){
     try {
-    //await sequelize.sync({force: false, alter: false})
+    await sequelize.sync({force: false, alter: false})
     app.listen(app.get('port'))
     //createRole()
     console.log('server listening on port: 4000')
