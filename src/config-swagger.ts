@@ -7,14 +7,14 @@ definition:{
         description:"es una api de prueba",
     },
     servers:[{
-      // url:"http://localhost:4000"
+       url:"http://localhost:4000" || process.env.PORT
+         
     }]
 },
 apis:[
+      './src/component/vendors/vendors.doc.ts',
+      './src/component/clientes/clientes.doc.ts',
+      './src/component/group/group.doc.ts',
+      './src/component/auth/auth.doc.ts'
     ]
 }
-// './src/component/projects/router.ts',
-//       './src/component/vendors/vendors.doc.ts',
-//       './src/component/clientes/clientes.doc.ts',
-//       './src/component/group/group.doc.ts',
-//       './src/component/auth/auth.doc.ts'
