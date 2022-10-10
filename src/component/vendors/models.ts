@@ -20,10 +20,10 @@ export const Vendors = sequelize.define('vendors',{
         type: DataTypes.STRING, 
     },
     dni:{
-        type: DataTypes.INTEGER, 
+        type: DataTypes.STRING, 
     },
     phone:{
-        type: DataTypes.INTEGER, 
+        type: DataTypes.STRING, 
     },
     category:{
         type: DataTypes.STRING,

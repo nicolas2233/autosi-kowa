@@ -1,6 +1,6 @@
 import {Request,Response} from 'express'
 import { Vendors } from './models'
-
+import bcrypt from 'bcryptjs'
 
 export async function getVendors(req: Request, res: Response) {
     try {
@@ -81,19 +81,23 @@ export async function deleteVendors(req: Request, res: Response) {
 }
 export async function updateVendors(req: Request, res: Response) {
     try {
-        const { id } = req.params
-        const { email,
-            password,
-            phone,
-            category
-        } = req.body
-        const vendedor = await Vendors.findByPk(id)
-        vendedor?.setDataValue("email", email)
-        vendedor?.setDataValue("password", password)
-        vendedor?.setDataValue("phone", phone)
-        vendedor?.setDataValue("category", category)
+        const idh=req.headers["user-id"]
+        const { id, email, phone, password } = req.body
+       if (id===null) {
+        const vendedor = await Vendors.findByPk(idh?.toString())
+         email!==null? vendedor?.setDataValue("email", email):""
+        phone!==null? vendedor?.setDataValue("phone", phone):""
+        password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
+         vendedor?.save()
+        res.json({vendedor,messeger:"modificaste tus datos satisfactoriamente"})
+       } else {
+       const vendedor = await Vendors.findByPk(id?.toString())
+       email!==null? vendedor?.setDataValue("email", email):""
+       phone!==null? vendedor?.setDataValue("phone", phone):""
+       password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
         vendedor?.save()
-        res.json(vendedor)
+       res.json({vendedor,messeger:"modificaste al vendedor satisfactoriamente"})
+       }
     } catch (error) {
         return res.status(500).json({ message: error })
     }
@@ -113,3 +117,23 @@ export async function getVendorGroup(req: Request, res: Response) {
     }
 
 }
+export async function getVendorCategoy(req: Request, res: Response) {
+    try {
+        const { category } = req.body
+        const vendedor = await Vendors.findAll({
+            where:{
+                category:category
+            }
+        })
+        res.json(vendedor)
+    } catch (error) {
+        return res.status(500).json({ message: error })
+    }
+
+   
+
+}
+ const passencrypting = async (pass: string) => {
+        const salt = await bcrypt.genSalt(10)
+        return await bcrypt.hash(pass, salt)
+      }

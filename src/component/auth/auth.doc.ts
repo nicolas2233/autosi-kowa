@@ -21,8 +21,11 @@
  *            type: string
  *            description: password del vendedor sera con 8 caracteres como minimo y conbinado con letras y numeros u al menos contendra una letra en mayuscula
  *          dni:
- *            type: integer
+ *            type: string
  *            description: dni del vendedor este sera unico
+ *          phone:
+ *            type: string
+ *            description: telefono del vendedor
  *          category:
  *             type: string
  *             description: la categoria del vendedor
@@ -32,6 +35,7 @@
  *          - email
  *          - password
  *          - dni
+ *          - phone
  *          - category
  *      example:
  *        name: maxi
@@ -43,12 +47,34 @@
  *        category: jr
  * 
  */
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    vendor:
+ *      type: object
+ *      properties:
+ *          password:
+ *            type: string
+ *            description: password del vendedor sera con 8 caracteres como minimo y conbinado con letras y numeros u al menos contendra una letra en mayuscula
+ *          email:
+ *            type: string
+ *            description: email del vendedor con el cual servira para loguearse y comunicacion
+ *          require:
+ *          - password
+ *          - email
+ *      example:
+ *        email: maxidisilvestro@gmail.com
+ *        password: maxidisilvestro
+ */
+
  /**
   * @swagger
   * tags:
   *   name: Auth
   *   description: ruta para crear vendedor y logeaerse
   */
+
 
 /**
  * @swagger
@@ -71,26 +97,33 @@
  *                  $ref: '#/components/schemas/vendors'
  *      500:
  *        description: error en el servidor
+ *      403:
+ *        description: usuario ya existe
  */
-/**
+
+ /**
  * @swagger
- * /auth/signup:
+ * /auth/signin:
  *  post:
- *    summary: crear un nuevo vendedor
+ *    summary: login
  *    tags: [Auth]
  *    requestBody:
  *        required: true
  *        content: 
  *             application/json:
  *              schema:
- *                  $ref: '#/components/schemas/vendors'
+ *                  $ref: '#/components/schemas/vendor'
  *    responses:
- *      200: 
- *        description: vendedor creado exitosamente
+ *      200:
+ *        description: trae los datos del vendedor logeado
  *        content:
  *             application/json:
  *              schema:
  *                  $ref: '#/components/schemas/vendors'
  *      500:
  *        description: error en el servidor
+ *      403:
+ *        description: credenciales invalidas
+ *      401:
+ *        description: usuario no existe
  */

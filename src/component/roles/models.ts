@@ -10,4 +10,6 @@ export const Role = sequelize.define('role',{
     name: {
         type: DataTypes.STRING,
     }
+},{
+    timestamps:false
 })

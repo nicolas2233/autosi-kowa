@@ -25,12 +25,7 @@ export const Crediticio = sequelize.define('crediticio',{
     }
 })
 
-Crediticio.hasMany(Movilidad,{
-    foreignKey:'movilidad_id',
-    sourceKey:'id',
-})
-
-// Movilidad.belongsTo(Movilidad,{
-//     foreignKey: 'movilidad_id',
-//     targetKey:'id'
-// })
+// Crediticio.hasMany(Movilidad)
+// Movilidad.hasMany(Crediticio)
+Crediticio.belongsToMany(Movilidad, { through: 'moviCred' })
+Movilidad.belongsToMany(Crediticio, { through: 'moviCred' })

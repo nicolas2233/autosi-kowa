@@ -54,3 +54,20 @@ Cliente.belongsTo(Personales,{
 
 // cbu: 0150817601000112993639
 // nombre: iñaki
+
+
+
+
+
+
+// https://mds-mds-api-gateway-dev.apps.k3s-dev.intranet.local
+
+// like 1
+
+
+
+
+
+// o en su defecto pueden usar mds-dev.api-gateway.intranet.local
+
+// like 1

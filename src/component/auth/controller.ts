@@ -4,6 +4,7 @@ import { Role } from '../roles/models'
 import bcrypt from 'bcryptjs'
 import secret from '../../config'
 import jwt from "jsonwebtoken";
+import {format,isDate} from 'date-fns'
 
 export async function signin(req: Request, res: Response) {
   const { email, password } = req.body
@@ -20,7 +21,7 @@ export async function signin(req: Request, res: Response) {
   if (!matchPass) { return res.status(401).json({ Message: "invalid password", Token: "null" }) }
 
   const token = jwt.sign({ id: newVendors.getDataValue("id") }, secret.SECRET, {
-    expiresIn: 86400
+    expiresIn: "3h"
 
   })
   res.status(200).json({ vendors: newVendors, token: token })
@@ -33,10 +34,8 @@ export async function signup(req: Request, res: Response) {
   let catrol = category
   const rol = await Role.findOne({ where: { name: catrol } });
   if (rol === null) {
-    console.log('Not found!');
     catrol = null
   } else {
-    console.log(rol instanceof Role);
     catrol = rol.getDataValue("id");
   }
   const mail=await Vendors.findOne({

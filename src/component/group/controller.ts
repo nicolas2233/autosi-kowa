@@ -15,15 +15,15 @@ export async function getGroup(req: Request, res: Response) {
 }
 export async function  createGroup(req: Request, res: Response) { 
     try {
-        const {name} = req.body
+        const {name,idLider} = req.body
         const vendedor=req.headers["user-id"]
-        const log = await Vendors.findByPk(vendedor?.toString())
+
+        const log = await Vendors.findByPk(idLider?.toString())
         if(log?.getDataValue("groupId")===null){
          const newGroup = await Group.create({
             name,
-            lider:vendedor
-        })
-        
+            lider:log.getDataValue("id")
+        })  
         log.setDataValue("groupId",newGroup.getDataValue("id"))
         log.save()
         res.json({message: "grupo creado satisfactoriamente",newGroup})
