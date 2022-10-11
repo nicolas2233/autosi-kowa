@@ -6,9 +6,9 @@ const router = Router()
 //[verifyToken,isAdmin]
 router.get('/vendors',getVendors), //trae todos los clientes
  
-router.put('/vendors/update',[verifyToken],updateVendors), // modificar un vendedor
+router.put('/vendors/update',updateVendors), // modificar un vendedor
   
-router.delete('/vendors/:id',[verifyToken, isAdmin, isGerente], deleteVendors), // eliminar un vendedor
+router.delete('/vendors', deleteVendors), // eliminar un vendedor
   
 router.get('/vendors/findFor',[verifyToken, isAdmin, isGerente], getOneVendors), // buscar un vendedor por algo
 

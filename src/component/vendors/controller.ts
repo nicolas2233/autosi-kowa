@@ -82,11 +82,12 @@ export async function deleteVendors(req: Request, res: Response) {
 export async function updateVendors(req: Request, res: Response) {
     try {
         const idh=req.headers["user-id"]
-        const { id, email, phone, password } = req.body
+        const { id, email, phone, password, category } = req.body
        if (id===null) {
         const vendedor = await Vendors.findByPk(idh?.toString())
          email!==null? vendedor?.setDataValue("email", email):""
         phone!==null? vendedor?.setDataValue("phone", phone):""
+        category!==null? vendedor?.setDataValue("category", category):""
         password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
          vendedor?.save()
         res.json({vendedor,messeger:"modificaste tus datos satisfactoriamente"})
