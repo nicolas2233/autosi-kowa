@@ -83,11 +83,23 @@ export async function updateVendors(req: Request, res: Response) {
     try {
         const idh=req.headers["user-id"]
         const { id, email, phone, password, category } = req.body
+        var rol;
        if (id===null) {
         const vendedor = await Vendors.findByPk(idh?.toString())
          email!==null? vendedor?.setDataValue("email", email):""
         phone!==null? vendedor?.setDataValue("phone", phone):""
-        category!==null? vendedor?.setDataValue("category", category):""
+        if(category==="jr"){
+            rol=1
+        }if(category==="sr"){
+            rol=2
+        }if(category==="supervisor"){
+            rol=3
+        }if(category==="gerente"){
+            rol=4
+        }if(category==="admin"){
+            rol=5
+        }
+        category!==null? vendedor?.setDataValue("category", rol):""
         password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
          vendedor?.save()
         res.json({vendedor,messeger:"modificaste tus datos satisfactoriamente"})

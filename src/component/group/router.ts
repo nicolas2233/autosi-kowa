@@ -6,7 +6,7 @@
    router.get('/group',getGroup)
    router.post('/group',[verifyToken,isGerente,isAdmin], createGroup),
    router.put('group/:id',updateGroup),
-   router.delete('/group/:id', deleteGroup),
+   router.delete('/group', deleteGroup),
    router.put('/group/addVendors', addVendors)
    
 
