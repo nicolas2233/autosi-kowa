@@ -1,5 +1,6 @@
 import {Request,Response} from 'express'
 import { Vendors } from './models'
+import { Role } from '../roles/models'
 import bcrypt from 'bcryptjs'
 
 export async function getVendors(req: Request, res: Response) {
@@ -83,23 +84,15 @@ export async function updateVendors(req: Request, res: Response) {
     try {
         const idh=req.headers["user-id"]
         const { id, email, phone, password, category } = req.body
-        var rol;
+        const rol = await Role.findOne({ where: { name: category } });
+  if (rol !== null) {
+   var catrol = rol.getDataValue("id");
+  } 
        if (id===null) {
         const vendedor = await Vendors.findByPk(idh?.toString())
          email!==null? vendedor?.setDataValue("email", email):""
         phone!==null? vendedor?.setDataValue("phone", phone):""
-        if(category==="jr"){
-            rol=1
-        }if(category==="sr"){
-            rol=2
-        }if(category==="supervisor"){
-            rol=3
-        }if(category==="gerente"){
-            rol=4
-        }if(category==="admin"){
-            rol=5
-        }
-        rol!==null? vendedor?.setDataValue("category", rol):""
+        category!==null? vendedor?.setDataValue("category", catrol):""
         password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
          vendedor?.save()
         res.json({vendedor,messeger:"modificaste tus datos satisfactoriamente"})
