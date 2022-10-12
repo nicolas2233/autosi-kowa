@@ -99,7 +99,7 @@ export async function updateVendors(req: Request, res: Response) {
         }if(category==="admin"){
             rol=5
         }
-        category!==null? vendedor?.setDataValue("category", rol):""
+        rol!==null? vendedor?.setDataValue("category", rol):""
         password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
          vendedor?.save()
         res.json({vendedor,messeger:"modificaste tus datos satisfactoriamente"})
