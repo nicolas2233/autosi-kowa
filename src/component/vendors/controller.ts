@@ -99,7 +99,9 @@ export async function updateVendors(req: Request, res: Response) {
        const vendedor = await Vendors.findByPk(id?.toString())
        email!==null? vendedor?.setDataValue("email", email):""
        phone!==null? vendedor?.setDataValue("phone", phone):""
-       password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
+       if(password!==null){
+        vendedor?.setDataValue("password",await passencrypting(password))
+       }
        console.log("**************",catrol)
         category!==null? vendedor?.setDataValue("category", catrol.toString()):""
         vendedor?.save()
