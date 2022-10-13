@@ -92,8 +92,6 @@ export async function updateVendors(req: Request, res: Response) {
         const vendedor = await Vendors.findByPk(idh?.toString())
          email!==null? vendedor?.setDataValue("email", email):""
         phone!==null? vendedor?.setDataValue("phone", phone):""
-        console.log("**************",catrol)
-        category!==null? vendedor?.setDataValue("category", catrol.toString()):""
         password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
          vendedor?.save()
         res.json({vendedor,messeger:"modificaste tus datos satisfactoriamente"})
@@ -102,6 +100,8 @@ export async function updateVendors(req: Request, res: Response) {
        email!==null? vendedor?.setDataValue("email", email):""
        phone!==null? vendedor?.setDataValue("phone", phone):""
        password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
+       console.log("**************",catrol)
+        category!==null? vendedor?.setDataValue("category", catrol.toString()):""
         vendedor?.save()
        res.json({vendedor,messeger:"modificaste al vendedor satisfactoriamente"})
        }
