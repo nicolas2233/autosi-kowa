@@ -92,6 +92,7 @@ export async function updateVendors(req: Request, res: Response) {
         const vendedor = await Vendors.findByPk(idh?.toString())
          email!==null? vendedor?.setDataValue("email", email):""
         phone!==null? vendedor?.setDataValue("phone", phone):""
+        console.log("**************",catrol)
         category!==null? vendedor?.setDataValue("category", catrol.toString()):""
         password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
          vendedor?.save()
