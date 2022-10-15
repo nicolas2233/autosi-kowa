@@ -82,31 +82,27 @@ export async function deleteVendors(req: Request, res: Response) {
 }
 export async function updateVendors(req: Request, res: Response) {
     try {
-        const idh=req.headers["user-id"]
         const { id, email, phone, password, category } = req.body
         const rol = await Role.findOne({ where: { name: category } });
   if (rol !== null) {
    var catrol = rol.getDataValue("id");
   } 
-       if (id===null) {
-        const vendedor = await Vendors.findByPk(idh?.toString())
-         email!==null? vendedor?.setDataValue("email", email):""
-        phone!==null? vendedor?.setDataValue("phone", phone):""
-        password!==null? vendedor?.setDataValue("password",await passencrypting(password)):""
-         vendedor?.save()
-        res.json({vendedor,messeger:"modificaste tus datos satisfactoriamente"})
-       } else {
+       
        const vendedor = await Vendors.findByPk(id?.toString())
-       email!==null? vendedor?.setDataValue("email", email):""
-       phone!==null? vendedor?.setDataValue("phone", phone):""
+       if (email!==null) {
+         vendedor?.setDataValue("email", email)
+       }
+       if (phone!==null) {
+        vendedor?.setDataValue("phone", phone)
+       }
        if(password!==null){
         vendedor?.setDataValue("password",await passencrypting(password))
        }
-       console.log("**************",catrol)
-        category!==null? vendedor?.setDataValue("category", catrol.toString()):""
+       if(category!==null){
+        vendedor?.setDataValue("category", catrol.toString())
+       }
         vendedor?.save()
        res.json({vendedor,messeger:"modificaste al vendedor satisfactoriamente"})
-       }
     } catch (error) {
         return res.status(500).json({ message: error })
     }
