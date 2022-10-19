@@ -1,7 +1,6 @@
 import app from './app'
 import  {sequelize}  from './db'
 import dotenv from 'dotenv'
-import '../src/component/projects/models'
 import { createRole } from './component/roles/controller'
 const envFound = dotenv.config();
 if(!envFound){

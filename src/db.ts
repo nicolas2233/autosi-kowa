@@ -27,7 +27,6 @@ require('dotenv').config()
 // export const sequelize = new Sequelize('Kowa-autosi','postgres','pili1804',{
 //     host:'localhost',
 //     dialect:'postgres',
-
 // })
 
 

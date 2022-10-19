@@ -1,4 +1,5 @@
  import {Request,Response} from 'express'
+import { Identifier } from 'sequelize/types'
 import { Vendors } from '../vendors/models'
  import { Group} from './models'
 
@@ -15,8 +16,7 @@ export async function getGroup(req: Request, res: Response) {
 }
 export async function  createGroup(req: Request, res: Response) { 
     try {
-        const {name,idLider} = req.body
-        const vendedor=req.headers["user-id"]
+        const {name,idLider,miembros} = req.body
 
         const log = await Vendors.findByPk(idLider?.toString())
         if(log?.getDataValue("groupId")===null){
@@ -24,6 +24,12 @@ export async function  createGroup(req: Request, res: Response) {
             name,
             lider:log.getDataValue("id")
         })  
+         miembros.forEach( async (e:string) => {
+            const miembro = await Vendors.findByPk(e?.toString())
+            if(miembro?.getDataValue("groupId")===null){
+                await miembro?.update({groupId:newGroup.getDataValue("id")})
+            }
+        });
         log.setDataValue("groupId",newGroup.getDataValue("id"))
         log.save()
         res.json({message: "grupo creado satisfactoriamente",newGroup})
@@ -64,6 +70,22 @@ export async function addVendors(req: Request, res: Response) {
             }
 
       
+    } catch (error) {
+        return res.status(500).json({ message: error })
+    }
+}
+
+export async function getGroupForOne(req: Request, res: Response) {
+    try { 
+        const {idGroup} = req.body
+    const group = await Group.findOne({
+        where:{
+             id:idGroup
+        },
+        include:[{model:Vendors}]
+     }
+     )
+      res.status(200).send(group)
     } catch (error) {
         return res.status(500).json({ message: error })
     }
