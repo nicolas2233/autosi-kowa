@@ -1,6 +1,6 @@
  import { Router } from "express";
  import { isAdmin, isGerente,verifyToken } from "../../middlewares/verifysingup";
- import {getGroup,updateGroup,createGroup,deleteGroup,addVendors, getGroupForOne} from './controller'
+ import {getGroup,updateGroup,createGroup,deleteGroup,addVendors, getGroupForOne, deleteVendor} from './controller'
  const router = Router()
 
    router.get('/group',getGroup)
@@ -9,6 +9,8 @@
    router.get('group/forOne',getGroupForOne)
    router.delete('/group', deleteGroup),
    router.put('/group/addVendors', addVendors)
+   router.put('/group/deleteVendors', deleteVendor)
+
    
 
 
