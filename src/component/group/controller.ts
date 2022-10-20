@@ -44,7 +44,7 @@ export async function  createGroup(req: Request, res: Response) {
                 await miembro?.update({groupId:newGroup.getDataValue("id")})
             }else{
                 count[n]=miembro?.getDataValue("email")
-                n++
+                n=n+1
             }
             
         }
