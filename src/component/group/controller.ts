@@ -20,19 +20,34 @@ export async function  createGroup(req: Request, res: Response) {
 
         const log = await Vendors.findByPk(idLider?.toString())
         if(log?.getDataValue("groupId")===null){
-         const count: any[]=[]
+         var count: any[]=[]
          const newGroup = await Group.create({
             name,
             lider:log.getDataValue("id")
         })  
-         miembros.forEach( async (e:string) => {
+        //  miembros.forEach( async (e:string) => {
+        //     let n=0
+        //     const miembro = await Vendors.findByPk(e?.toString())
+        //     if(miembro?.getDataValue("groupId")===null){
+        //         await miembro?.update({groupId:newGroup.getDataValue("id")})
+        //     }else{
+        //         console.log("*************soy e",e)
+        //         count[n]=e
+        //         n++
+        //     }
+        // });
+        for (let i = 0; i < miembros.length; i++) {
+            let n=0
+            const e= miembros[i]
             const miembro = await Vendors.findByPk(e?.toString())
             if(miembro?.getDataValue("groupId")===null){
                 await miembro?.update({groupId:newGroup.getDataValue("id")})
             }else{
-                count.push(miembro?.getDataValue("email"))
+                count[n]=miembro?.getDataValue("email")
+                n++
             }
-        });
+            
+        }
         log.setDataValue("groupId",newGroup.getDataValue("id"))
         log.save()
            return res.json({message: "grupo creado satisfactoriamente",grupo: newGroup, rechazados: count })
