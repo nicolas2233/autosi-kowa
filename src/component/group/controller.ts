@@ -20,18 +20,17 @@ export async function  createGroup(req: Request, res: Response) {
 
         const log = await Vendors.findByPk(idLider?.toString())
         if(log?.getDataValue("groupId")===null){
-            const count: (Model<any, any> | null)[]=[]
+         const count=[{}]
          const newGroup = await Group.create({
             name,
-            lider:log.getDataValue("id"),
-            include:[{model:Vendors}]
+            lider:log.getDataValue("id")
         })  
          miembros.forEach( async (e:string) => {
             const miembro = await Vendors.findByPk(e?.toString())
             if(miembro?.getDataValue("groupId")===null){
                 await miembro?.update({groupId:newGroup.getDataValue("id")})
             }else{
-                count.push(miembro)
+                count.push(miembro?.getDataValue("email"))
             }
         });
         log.setDataValue("groupId",newGroup.getDataValue("id"))
