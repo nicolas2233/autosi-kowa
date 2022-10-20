@@ -20,7 +20,7 @@ export async function  createGroup(req: Request, res: Response) {
 
         const log = await Vendors.findByPk(idLider?.toString())
         if(log?.getDataValue("groupId")===null){
-         const count=[{}]
+         const count: any[]=[]
          const newGroup = await Group.create({
             name,
             lider:log.getDataValue("id")
