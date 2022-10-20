@@ -1,5 +1,5 @@
  import {Request,Response} from 'express'
-import { Identifier } from 'sequelize/types'
+import { Identifier, Model } from 'sequelize/types'
 import { Vendors } from '../vendors/models'
  import { Group} from './models'
 
@@ -20,18 +20,25 @@ export async function  createGroup(req: Request, res: Response) {
 
         const log = await Vendors.findByPk(idLider?.toString())
         if(log?.getDataValue("groupId")===null){
+            const count: (Model<any, any> | null)[]=[]
          const newGroup = await Group.create({
             name,
-            lider:log.getDataValue("id")
+            lider:log.getDataValue("id"),
+            include:[{model:Vendors}]
         })  
          miembros.forEach( async (e:string) => {
             const miembro = await Vendors.findByPk(e?.toString())
             if(miembro?.getDataValue("groupId")===null){
                 await miembro?.update({groupId:newGroup.getDataValue("id")})
+            }else{
+                count.push(miembro)
             }
         });
         log.setDataValue("groupId",newGroup.getDataValue("id"))
         log.save()
+         if(count.length>0){
+            res.json({message: "grupo creado satisfactoriamente",grupo: newGroup,rechazados: count })
+         }
         res.json({message: "grupo creado satisfactoriamente",newGroup})
         }else{
             res.json({message: "ya eres lider de un grupo"})
