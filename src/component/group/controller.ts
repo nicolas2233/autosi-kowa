@@ -37,9 +37,9 @@ export async function  createGroup(req: Request, res: Response) {
         log.setDataValue("groupId",newGroup.getDataValue("id"))
         log.save()
          if(count.length>0){
-            res.json({message: "grupo creado satisfactoriamente",grupo: newGroup,rechazados: count })
+           return res.json({message: "grupo creado satisfactoriamente",grupo: newGroup,rechazados: count })
          }
-        res.json({message: "grupo creado satisfactoriamente",newGroup})
+       return res.json({message: "grupo creado satisfactoriamente",newGroup})
         }else{
             res.json({message: "ya eres lider de un grupo"})
         }
