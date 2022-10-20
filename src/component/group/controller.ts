@@ -44,7 +44,22 @@ export async function  createGroup(req: Request, res: Response) {
 export async function  deleteGroup(req: Request, res: Response) {
     
     try {
-
+        const { id } = req.body
+        const group = await Group.findOne({
+            where:{
+                 id:id
+            }
+         })
+         const vendedor = await Vendors.findAll({
+            where:{
+                groupId:id
+            }
+        })
+        group?.destroy()
+        vendedor.forEach(async e => {
+        await e?.update({groupId:null})
+        });
+        return res.json({ message: "grupo eliminado satisfactoriamente" })
     } catch (error) {
         return res.status(500).json({ message: error })
     }
@@ -52,7 +67,20 @@ export async function  deleteGroup(req: Request, res: Response) {
 }
 export async function  updateGroup(req: Request, res: Response) {
     try {
-      
+        const {idGroup,idLider,nombre} = req.body
+        const group = await Group.findByPk(idGroup)
+          if(idLider!==null){
+           const oldLider=group?.getDataValue("idLider")
+           const old = await Vendors.findByPk(oldLider)
+           old?.update({groupId:null})
+            const newLider = await Vendors.findByPk(idLider)
+            newLider?.update({groupId:idGroup})
+            group?.update({idLider:idLider})
+          }
+          if(nombre!==null){
+            group?.update({nombre:nombre})
+          }
+          return res.json({ message:"grupo actualizado satisfactoriamente"})
     } catch (error) {
         return res.status(500).json({ message: error })
     }
@@ -90,3 +118,14 @@ export async function getGroupForOne(req: Request, res: Response) {
         return res.status(500).json({ message: error })
     }
 }
+export async function deleteVendor(req: Request, res: Response) {
+    try {
+        const {idVendor} = req.body
+            const vendors = await Vendors.findByPk(idVendor)
+                   await vendors?.update({groupId:null})  
+                  return  res.json({ message: "vendedore eliminado del gupo" })                     
+    } catch (error) {
+        return res.status(500).json({ message: error })
+    }
+}
+

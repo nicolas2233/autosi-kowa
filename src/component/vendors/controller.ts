@@ -84,22 +84,30 @@ export async function updateVendors(req: Request, res: Response) {
     try {
         const { id, email, phone, password, category } = req.body
         const rol = await Role.findOne({ where: { name: category } });
-  if (rol !== null) {
-   var catrol = rol.getDataValue("id");
-  } 
-       
+        if (rol !== null) {
+            var catrol = rol.getDataValue("id");
+         } 
        const vendedor = await Vendors.findByPk(id?.toString())
        if (email!==null) {
-         vendedor?.setDataValue("email", email)
+            const newemail = await Vendors.findOne({
+                where:{
+                    email:email
+                }
+            })
+            if(newemail===null){
+                vendedor?.update({email:email})
+            }else{
+                return res.json({ message: "email ya existente" })
+            }
        }
        if (phone!==null) {
-        vendedor?.setDataValue("phone", phone)
+        vendedor?.update({phone:phone})
        }
        if(password!==null){
-        vendedor?.setDataValue("password",await passencrypting(password))
+        vendedor?.update({password:await passencrypting(password)})
        }
        if(category!==null){
-        vendedor?.setDataValue("category", catrol.toString())
+        vendedor?.update({category: catrol.toString()})
        }
         vendedor?.save()
        res.json({vendedor,messeger:"modificaste al vendedor satisfactoriamente"})
