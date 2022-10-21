@@ -87,33 +87,35 @@ export async function  deleteGroup(req: Request, res: Response) {
 }
 export async function  updateGroup(req: Request, res: Response) {
     try {
-        const {idGroup,idLider,nombre} = req.body
+        const { idGroup, idLider, nombre } = req.body
         const group = await Group.findByPk(idGroup)
-        if(idLider!==null){
-              const newLider = await Vendors.findByPk(idLider)
-              const oldLider=group?.getDataValue("idLider")
-              const old = await Vendors.findByPk(oldLider)
-             const search = await Group.findOne({
-                where:{
-                    lider:idLider.toString()
+        if (idLider !== null) {
+            const newLider = await Vendors.findByPk(idLider)
+            const oldLider = group?.getDataValue("idLider")
+            const old = await Vendors.findByPk(oldLider)
+            const search = await Group.findOne({
+                where: {
+                    lider: idLider.toString()
                 }
             })
-            if(nombre!==null){
-              group?.update({name:nombre})
+            if (nombre !== null) {
+                group?.update({ name: nombre })
             }
-     if(search===null){
-           group?.update({lider:null})
-           old?.update({groupId:null})
-           group?.update({lider:idLider})
-          newLider?.update({groupId:idGroup})
+            if (search === null) {
+                group?.update({ lider: null })
+                old?.update({ groupId: null })
+                group?.update({ lider: idLider })
+                newLider?.update({ groupId: idGroup })
 
-           }else{
-            return res.json({ message:"ya eres lider de un grupo", search})
-           }
+            } else if( search.getDataValue("id")===idGroup) {
+               
+            }else{
+                 return res.json({ message: "ya eres lider de un grupo", search })
+            }
 
-            
-          }
-          return res.json({ message:"grupo actualizado satisfactoriamente", group})
+
+        }
+        return res.json({ message: "grupo actualizado satisfactoriamente", group })
     } catch (error) {
         return res.status(500).json({ message: error })
     }
