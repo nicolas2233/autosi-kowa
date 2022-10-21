@@ -97,7 +97,10 @@ export async function  updateGroup(req: Request, res: Response) {
                 where:{
                     lider:idLider.toString()
                 }
-             })
+            })
+            if(nombre!==null){
+              group?.update({name:nombre})
+            }
      if(search===null){
            group?.update({lider:null})
            old?.update({groupId:null})
@@ -109,9 +112,6 @@ export async function  updateGroup(req: Request, res: Response) {
            }
 
             
-          }
-          if(nombre!==null){
-            group?.update({name:nombre})
           }
           return res.json({ message:"grupo actualizado satisfactoriamente", group})
     } catch (error) {
