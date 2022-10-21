@@ -93,9 +93,9 @@ export async function  updateGroup(req: Request, res: Response) {
               const newLider = await Vendors.findByPk(idLider)
               const oldLider=group?.getDataValue("idLider")
               const old = await Vendors.findByPk(oldLider)
-             const search = await Group.findAll({
+             const search = await Group.findOne({
                 where:{
-                    lider:idLider
+                    lider:idLider.toString()
                 }
              })
      if(search===null){
@@ -103,8 +103,9 @@ export async function  updateGroup(req: Request, res: Response) {
            old?.update({groupId:null})
            group?.update({lider:idLider})
           newLider?.update({groupId:idGroup})
+
            }else{
-            return res.json({ message:"ya eres lider de un grupo", group})
+            return res.json({ message:"ya eres lider de un grupo", search})
            }
 
             
