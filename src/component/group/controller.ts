@@ -89,16 +89,20 @@ export async function  updateGroup(req: Request, res: Response) {
     try {
         const {idGroup,idLider,nombre} = req.body
         const group = await Group.findByPk(idGroup)
-          if(idLider!==null){
-           const oldLider=group?.getDataValue("idLider")
+        if(idLider!==null){
+              const newLider = await Vendors.findByPk(idLider)
+              const oldLider=group?.getDataValue("idLider")
+              const old = await Vendors.findByPk(oldLider)
+     if(newLider?.getDataValue("groupId")===null){
            group?.update({lider:null})
-           const old = await Vendors.findByPk(oldLider)
-           console.log(old)
            old?.update({groupId:null})
-            const newLider = await Vendors.findByPk(idLider)
-            console.log(newLider)
-            group?.update({lider:idLider})
-            newLider?.update({groupId:idGroup})
+           group?.update({lider:idLider})
+          newLider?.update({groupId:idGroup})
+           }else{
+            return res.json({ message:"ya eres lider de un grupo", group})
+           }
+
+            
           }
           if(nombre!==null){
             group?.update({name:nombre})
