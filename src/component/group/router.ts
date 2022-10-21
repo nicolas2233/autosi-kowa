@@ -6,7 +6,7 @@
    router.get('/group',getGroup)
    router.post('/group', createGroup),
    router.put('/group',updateGroup),
-   router.post('group/forOne',getGroupForOne)
+   router.get('group/forOne',[verifyToken],getGroupForOne)
    router.delete('/group', deleteGroup),
    router.put('/group/addVendors', addVendors)
    router.put('/group/deleteVendors', deleteVendor)
