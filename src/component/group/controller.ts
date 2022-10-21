@@ -145,9 +145,8 @@ export async function addVendors(req: Request, res: Response) {
 
 export async function getGroupForOne(req: Request, res: Response) {
     try { 
-        const ven=req.headers["user-id"]
-        const vendedor= await Vendors.findByPk(ven?.toString())
-       const idGroup = vendedor?.getDataValue("groupId")
+        const {idGroup} = req.body
+      
     const group = await Group.findOne({
         where:{
              id:idGroup
