@@ -93,7 +93,12 @@ export async function  updateGroup(req: Request, res: Response) {
               const newLider = await Vendors.findByPk(idLider)
               const oldLider=group?.getDataValue("idLider")
               const old = await Vendors.findByPk(oldLider)
-     if(newLider?.getDataValue("groupId")===null){
+             const search = await Group.findAll({
+                where:{
+                    lider:idLider
+                }
+             })
+     if(search===null){
            group?.update({lider:null})
            old?.update({groupId:null})
            group?.update({lider:idLider})
