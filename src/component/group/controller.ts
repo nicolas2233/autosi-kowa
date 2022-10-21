@@ -114,7 +114,7 @@ export async function addVendors(req: Request, res: Response) {
             const vendors = await Vendors.findByPk(idVendor)
 
             if(vendors!==null){
-                if(vendors.getDataValue("groupId")===null){
+                if(vendors.getDataValue("groupId")!==null){
                 return  res.json({ message: "el vendedor ya pertenece a un grupo" }) 
                 }else{
                      await vendors?.update({groupId:idGroup})  
