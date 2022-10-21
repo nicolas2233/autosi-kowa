@@ -114,8 +114,13 @@ export async function addVendors(req: Request, res: Response) {
             const vendors = await Vendors.findByPk(idVendor)
 
             if(vendors!==null){
-                   await vendors?.update({groupId:idGroup})  
-                  return  res.json({ message: "vendedores agregados al gupo" })                 
+                if(vendors.getDataValue("groupId")===null){
+                return  res.json({ message: "el vendedor ya pertenece a un grupo" }) 
+                }else{
+                     await vendors?.update({groupId:idGroup})  
+                  return  res.json({ message: "vendedores agregados al gupo" })  
+                }
+                                 
             }else{
                return res.json({ message: "el vendedor no se encontro" })  
             }
@@ -146,7 +151,8 @@ export async function deleteVendor(req: Request, res: Response) {
         const {idVendor} = req.body
             const vendors = await Vendors.findByPk(idVendor)
                    await vendors?.update({groupId:null})  
-                  return  res.json({ message: "vendedore eliminado del gupo" })                     
+                   
+                  return  res.json({ message: "vendedor eliminado del gupo", vendors })                     
     } catch (error) {
         return res.status(500).json({ message: error })
     }
