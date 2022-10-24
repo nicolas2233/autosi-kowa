@@ -96,6 +96,9 @@ export async function updateVendors(req: Request, res: Response) {
             })
             if(newemail===null){
                 vendedor?.update({email:email})
+            }else if(vendedor?.getDataValue("email")===email)
+            {
+                
             }else{
                 return res.json({ message: "email ya existente" })
             }
