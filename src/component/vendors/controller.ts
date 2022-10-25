@@ -2,6 +2,7 @@ import {Request,Response} from 'express'
 import { Vendors } from './models'
 import { Role } from '../roles/models'
 import bcrypt from 'bcryptjs'
+import { Group } from '../group/models'
 
 export async function getVendors(req: Request, res: Response) {
     try {
@@ -73,8 +74,17 @@ export async function deleteVendors(req: Request, res: Response) {
     try {
         const { id } = req.body
         const vendor = await Vendors.findByPk(id)
-        vendor?.destroy()
-        res.json(vendor)
+        const group = await Group.findOne({
+            where:{
+                lider:id
+            }
+        })
+        if(group===null){
+            res.json({message:"el vendedor es lider de un grupo", group})
+        }else{
+            vendor?.destroy()
+             res.json({message:"el vendedor a sido eliminado exitosamente", vendor})
+        }
     } catch (error) {
         return res.status(500).json({ message: error })
     }
