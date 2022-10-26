@@ -80,10 +80,10 @@ export async function deleteVendors(req: Request, res: Response) {
             }
         })
         if(group===null){
-            res.json({message:"el vendedor es lider de un grupo", group})
-        }else{
             vendor?.destroy()
-             res.json({message:"el vendedor a sido eliminado exitosamente", vendor})
+            res.json({message:"el vendedor a sido eliminado exitosamente", vendor})
+        }else{
+            res.json({message:"el vendedor es lider de un grupo", group})
         }
     } catch (error) {
         return res.status(500).json({ message: error })
