@@ -74,7 +74,7 @@ export async function deleteVendors(req: Request, res: Response) {
     try {
         const { id } = req.body
         const vendor = await Vendors.findByPk(id)
-        const group = await Group.findAll({
+        const group = await Group.findOne({
             where:{
                 lider:id.toString()
             }
