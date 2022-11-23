@@ -142,7 +142,6 @@ export async function addVendors(req: Request, res: Response) {
         return res.status(500).json({ message: error })
     }
 }
-
 export async function getGroupForOne(req: Request, res: Response) {
     try { 
         const {idGroup} = req.body

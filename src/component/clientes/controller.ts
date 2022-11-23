@@ -91,50 +91,114 @@ export async function  deleteClient(req: Request, res: Response) {
 export async function  updateClient(req: Request, res: Response) {
     try {
         const { id } = req.body
-        const { name,lastname,tel } = req.body
-        const { email,domicilio,cuil,edad } = req.body
-        const { permuta,credito,donde,actual,tc } = req.body
-        const { situacion,ingreso } = req.body
-        const { vehiculo } = req.body
+        const { nombre,apellido,telefono } = req.body
         const vendedor=req.headers["user-id"]
         //const ven = await Vendors.findByPk(vendedor)
         vendedor?.valueOf()
-        const carga = await Carga.findByPk(id)
-        const cliente = await Cliente.findByPk(id)
-        const personales = await Personales.findByPk(id)
-        const laboral = await Laboral.findByPk(id)
-        const crediticio = await Crediticio.findByPk(id)
-        const movilidad = await Movilidad.findByPk(id)
+       
+        const cliente = await Cliente.findByPk(Number(id))
         //carga de datos del cliente
-        name!==null? cliente?.setDataValue("name", name):""
-        lastname!==null? cliente?.setDataValue("apellido", lastname):""
-        tel!==null? cliente?.setDataValue("telefono", tel):""
-        //carga de datos personales
-        email!==null? personales?.setDataValue("email", email):""
-        domicilio!==null? personales?.setDataValue("domicilio", domicilio):""
-        cuil!==null? personales?.setDataValue("cuil", cuil):""
-        edad!==null? personales?.setDataValue("edad", edad):""
-        //carga de datos laboral
-        situacion!==null? laboral?.setDataValue("situacion", situacion):""
-        ingreso!==null? laboral?.setDataValue("ingreso", ingreso):""
-        //carga de datos crediticios
-        permuta!==null? crediticio?.setDataValue("permuta", permuta):""
-        credito!==null? crediticio?.setDataValue("credito", credito):""
-        donde!==null? crediticio?.setDataValue("donde", donde):""
-        actual!==null? crediticio?.setDataValue("actual", actual):""
-        tc!==null? crediticio?.setDataValue("tc", tc):""
-        
-
-        crediticio?.save()
+        if(nombre!==null){
+          cliente?.setDataValue("nombre", nombre)
+        }
+        if(apellido!==null){
+          cliente?.setDataValue("apellido", apellido)
+        }
+        if(telefono!==null){
+          cliente?.setDataValue("telefono", telefono)
+        }
+      
         cliente?.save()
-        laboral?.save()
-        personales?.save()
-        res.json({personales:personales, laboral:laboral, cliente:cliente, crediticio:crediticio})
+      
+        res.json({cliente:cliente})
     } catch (error) {
         return res.status(500).json({ message: error })
     }
 }
 
+
+export async function updatePersonales(req: Request, res: Response) {
+  try {
+      const { id } = req.body
+      const { email,domicilio,cuil,edad } = req.body
+       
+      const vendedor=req.headers["user-id"]
+      vendedor?.valueOf()
+      const personales = await Personales.findByPk(Number(id))
+      //carga de datos personales
+      if(email!==null){
+        personales?.setDataValue("email", email)
+      }
+      if(domicilio!==null){
+        personales?.setDataValue("domicilio", domicilio)
+      }
+      if(cuil!==null){
+        personales?.setDataValue("cuil", cuil)
+      }
+      if(edad!==null){
+        personales?.setDataValue("edad", edad)
+      }
+
+      
+      personales?.save()
+      res.json({personales:personales})
+  } catch (error) {
+      return res.status(500).json({ message: error })
+  }
+}
+
+export async function  updateLaboral(req: Request, res: Response) {
+  try {
+      const { id } = req.body
+      const { situacion,ingreso } = req.body
+      const vendedor=req.headers["user-id"]
+      vendedor?.valueOf()
+      const laboral = await Laboral.findByPk(Number(id))
+      //carga de datos personales
+      if(situacion!==null){
+        laboral?.setDataValue("situacion", situacion)
+       
+      }
+      if(ingreso!==null){
+        laboral?.setDataValue("ingreso", ingreso)
+      }
+      laboral?.save()
+      res.json({laboral:laboral})
+  } catch (error) {
+      return res.status(500).json({ message: error })
+  }
+}
+export async function updateCrediticio(req: Request, res: Response) {
+  try {
+      const { id } = req.body
+      const { permuta,credito,donde,actual,tc } = req.body
+       
+      const vendedor=req.headers["user-id"]
+      vendedor?.valueOf()
+      const crediticio = await Crediticio.findByPk(Number(id))
+      //carga de datos personales
+      if(permuta!==null){
+        crediticio?.setDataValue("permuta", permuta)
+      }
+      if(credito!==null){
+        crediticio?.setDataValue("credito", credito)
+      }
+      if(donde!==null){
+        crediticio?.setDataValue("donde", donde)
+      }
+      if(actual!==null){
+        crediticio?.setDataValue("actual", actual)
+      }
+      if(tc!==null){
+        crediticio?.setDataValue("tc", tc)
+      }
+
+      crediticio?.save()
+      res.json({crediticio:crediticio})
+  } catch (error) {
+      return res.status(500).json({ message: error })
+  }
+}
 export async function addMovilidad(req: Request, res: Response) {
   // try {
   //     const {idCliente} = req.body
