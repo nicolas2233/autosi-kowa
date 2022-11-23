@@ -97,6 +97,7 @@ export async function  updateClient(req: Request, res: Response) {
         vendedor?.valueOf()
        
         const cliente = await Cliente.findByPk(Number(id))
+        const precarga = await Carga.findByPk(Number(id))
         //carga de datos del cliente
         if(nombre!==null){
           cliente?.setDataValue("nombre", nombre)
@@ -105,12 +106,12 @@ export async function  updateClient(req: Request, res: Response) {
           cliente?.setDataValue("apellido", apellido)
         }
         if(telefono!==null){
-          cliente?.setDataValue("telefono", telefono)
+          precarga?.setDataValue("telefono", telefono)
         }
       
         cliente?.save()
-      
-        res.json({cliente:cliente})
+        precarga?.save()
+        res.json({cliente:cliente, precarga:precarga })
     } catch (error) {
         return res.status(500).json({ message: error })
     }
@@ -176,6 +177,7 @@ export async function updateCrediticio(req: Request, res: Response) {
       const vendedor=req.headers["user-id"]
       vendedor?.valueOf()
       const crediticio = await Crediticio.findByPk(Number(id))
+
       //carga de datos personales
       if(permuta!==null){
         crediticio?.setDataValue("permuta", permuta)
