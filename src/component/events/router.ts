@@ -11,7 +11,7 @@ const router = Router()
   
    router.delete('/events', deleteEvent),
   
-   router.put('/projects', updateEvent)
+   router.put('/events', updateEvent)
 
 
 
