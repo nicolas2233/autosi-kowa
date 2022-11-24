@@ -87,12 +87,9 @@ export async function  deleteEvent(req: Request, res: Response) {
     
     try {
           const { id } = req.params
-    await Event.destroy({
-        where:{
-            id
-        }
-      })
-        res.send("evento eliminado correctamente")
+    const evento = await Event.findByPk(id)
+    evento?.destroy()
+    res.send("evento eliminado correctamente")
     } catch (error) {
        return res.status(500).json({message: error})
     }
