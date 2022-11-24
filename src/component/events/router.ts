@@ -7,9 +7,9 @@ const router = Router()
 
   router.post('/events',[verifyToken], createEvent),
   
-  router.get('/events/eventTime',[verifyToken],getEventTime)
+  router.get('/events/eventTime',[verifyToken],getEventTime),
   
-   router.delete('/events', deleteEvent),
+   router.delete('/events',[verifyToken], deleteEvent),
   
    router.put('/events', updateEvent)
 
