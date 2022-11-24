@@ -83,36 +83,46 @@ export async function getEventTime(req: Request, res: Response) {
 
 
 
-// export async function  deleteProject(req: Request, res: Response) {
+export async function  deleteEvent(req: Request, res: Response) {
     
-//     try {
-//           const { id } = req.params
-//     await Project.destroy({
-//         where:{
-//             id
-//         }
-//       })
-//         res.send("projecto eliminad correctamente")
-//     } catch (error) {
-//        return res.status(500).json({message: error})
-//     }
+    try {
+          const { id } = req.params
+    await Event.destroy({
+        where:{
+            id
+        }
+      })
+        res.send("evento eliminado correctamente")
+    } catch (error) {
+       return res.status(500).json({message: error})
+    }
   
-// }
+}
 
-// export async function  updateProject(req: Request, res: Response) {
+ export async function  updateEvent(req: Request, res: Response) {
     
-//     try {
-//         const { id } = req.params
-//         const {name, priority, description} = req.body
-
-//         const project = await Project.findByPk(id)
-//         console.log("este es un apdate",project)
+     try {
+        const { id } = req.params
+         const {hora, nota, tipo, clienteId} = req.body
+        const evento = await Event.findByPk(Number(id))
+        if(hora!==null){
+            evento?.setDataValue("hora",hora)
+        }
+        if(nota!==null){
+            evento?.setDataValue("nota",nota)
+        }
+        if(tipo!==null){
+            evento?.setDataValue("tipo",tipo)
+        }
+        if(clienteId!==null){
+            evento?.setDataValue("clienteId",clienteId)
+        }
+        evento?.save()
+       res.json({message: "evento creado satisfactoriamente", event: evento})
         
-       
-        
-//     } catch (error) {
-//        return res.status(500).json({message: error})
-//     }
+     } catch (error) {
+       return res.status(500).json({message: error})
+    }
   
-// }
+ }
 
