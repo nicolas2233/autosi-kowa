@@ -88,7 +88,11 @@ export async function  deleteEvent(req: Request, res: Response) {
     try {
           const { id, clienteId } = req.params
     const evento = await Event.findByPk(id)
-    const cliente = await Cliente.findByPk(clienteId)
+    const cliente = await Cliente.findOne({
+        where: {
+            id:clienteId
+        }
+    })
     cliente?.setDataValue("event_id","")
     cliente?.save()
     evento?.destroy()
