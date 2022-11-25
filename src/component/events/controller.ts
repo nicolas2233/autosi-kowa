@@ -43,7 +43,7 @@ export async function createEvent(req: Request, res: Response) {
                 hora,
                 tipo,
                 nota,
-                cliente_Id: clienteId,
+                cliente: clienteId,
                 vendedor: vendedor
             })
             //const eventid = newEvent.getDataValue("id")
@@ -86,13 +86,10 @@ export async function getEventTime(req: Request, res: Response) {
 export async function  deleteEvent(req: Request, res: Response) {
     
     try {
-          const { id, clienteId } = req.params
+          const { id } = req.params
     const evento = await Event.findByPk(id)
-    const cliente = await Cliente.findByPk(clienteId)
-    cliente?.setDataValue("event_Id","")
-    cliente?.save()
     evento?.destroy()
-    res.send({message:"evento eliminado correctamente", cliente: cliente})
+    res.send({message:"evento eliminado correctamente"})
     } catch (error) {
        return res.status(500).json({message: error})
     }
