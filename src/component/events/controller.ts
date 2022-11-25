@@ -46,9 +46,9 @@ export async function createEvent(req: Request, res: Response) {
                 cliente_Id: clienteId,
                 vendedor: vendedor
             })
-            const eventid = newEvent.getDataValue("id")
-            await cliente.setDataValue("event_Id", eventid)
-            cliente.save()
+            //const eventid = newEvent.getDataValue("id")
+            //await cliente.setDataValue("event_Id", eventid)
+            //cliente.save()
             return res.json({ message: "evento creado satisfactoriamente", newEvent: newEvent })
         }
         return res.json({ message: "el usuario no se encontro" })
