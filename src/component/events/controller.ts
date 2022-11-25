@@ -86,7 +86,12 @@ export async function getEventTime(req: Request, res: Response) {
 export async function  canceledEvent(req: Request, res: Response) {
     try {
     const { id } = req.params
-    const evento = await Event.findByPk(id)
+   
+    const evento = await Event.findOne({
+        where:{
+            id:id
+        }
+    })
     evento?.setAttributes("estado","cancelado")
     evento?.save()
     res.send({message:"evento eliminado correctamente", evento:evento})
@@ -99,7 +104,12 @@ export async function  canceledEvent(req: Request, res: Response) {
 export async function  deletedEvent(req: Request, res: Response) {
     try {
     const { id } = req.params
-    const evento = await Event.findByPk(id)
+    console.log("#############################",id)
+    const evento = await Event.findOne({
+        where:{
+            id:id
+        }
+    })
     console.log("********************************************",evento)
     evento?.destroy()
     res.send({message:"evento eliminado correctamente"})
