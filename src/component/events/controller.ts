@@ -96,6 +96,18 @@ export async function  canceledEvent(req: Request, res: Response) {
   
 }
 
+export async function  deletedEvent(req: Request, res: Response) {
+    try {
+    const { id } = req.params
+    const evento = await Event.findByPk(id)
+    evento?.destroy()
+    res.send({message:"evento eliminado correctamente"})
+    } catch (error) {
+       return res.status(500).json({message: error})
+    }
+  
+}
+
  export async function  updateEvent(req: Request, res: Response) {
     
      try {
