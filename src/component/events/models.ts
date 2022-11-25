@@ -25,11 +25,11 @@ export const Event = sequelize.define('event',{
     }
 })
 
-Cliente.hasOne(Event,{
-     foreignKey:'cliente_Id',
+ Event.hasOne(Cliente,{
+     foreignKey:'event_Id',
      sourceKey:'id',
  })
-//  Event.belongsTo(Cliente,{
-//     foreignKey: 'cliente_Id',
-//      targetKey:'id'
-//  })
+ Event.belongsTo(Cliente,{
+    foreignKey: 'cliente_Id',
+     targetKey:'id'
+ })
