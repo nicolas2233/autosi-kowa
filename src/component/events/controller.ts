@@ -44,7 +44,9 @@ export async function createEvent(req: Request, res: Response) {
                 tipo,
                 nota,
                 cliente: clienteId,
-                vendedor: vendedor
+                vendedor: vendedor,
+                estado: "activo"
+
             })
             //const eventid = newEvent.getDataValue("id")
             //await cliente.setDataValue("event_Id", eventid)
@@ -81,15 +83,13 @@ export async function getEventTime(req: Request, res: Response) {
     }
 }
 
-
-
-export async function  deleteEvent(req: Request, res: Response) {
-    
+export async function  canceledEvent(req: Request, res: Response) {
     try {
-          const { id } = req.params
+    const { id } = req.params
     const evento = await Event.findByPk(id)
-    evento?.destroy()
-    res.send({message:"evento eliminado correctamente"})
+    evento?.setAttributes("estado","cancelado")
+    evento?.save()
+    res.send({message:"evento eliminado correctamente", evento:evento})
     } catch (error) {
        return res.status(500).json({message: error})
     }

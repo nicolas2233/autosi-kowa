@@ -25,6 +25,9 @@ export const Event = sequelize.define('event',{
     },
     cliente:{
         type: DataTypes.INTEGER, 
+    },
+    estado:{
+        type: DataTypes.STRING, 
     }
 })
 
