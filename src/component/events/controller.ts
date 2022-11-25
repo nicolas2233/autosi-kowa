@@ -89,10 +89,10 @@ export async function  deleteEvent(req: Request, res: Response) {
           const { id, clienteId } = req.params
     const evento = await Event.findByPk(id)
     const cliente = await Cliente.findByPk(clienteId)
-    cliente?.setDataValue("event_id",null)
+    cliente?.setDataValue("event_id","")
     cliente?.save()
     evento?.destroy()
-    res.send("evento eliminado correctamente")
+    res.send({message:"evento eliminado correctamente", cliente: cliente})
     } catch (error) {
        return res.status(500).json({message: error})
     }
