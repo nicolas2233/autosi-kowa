@@ -86,8 +86,11 @@ export async function getEventTime(req: Request, res: Response) {
 export async function  deleteEvent(req: Request, res: Response) {
     
     try {
-          const { id } = req.params
+          const { id, clienteId } = req.params
     const evento = await Event.findByPk(id)
+    const cliente = await Cliente.findByPk(clienteId)
+    cliente?.setDataValue("event_id",null)
+    cliente?.save()
     evento?.destroy()
     res.send("evento eliminado correctamente")
     } catch (error) {
