@@ -6,7 +6,6 @@ export async function getEvent(req: Request, res: Response) {
     try {
         const vendedor = req.headers["user-id"]
         const events = await Event.findAll({
-            include: [{ model: Cliente }],
             where: {
                 vendedor: vendedor
             }
