@@ -9,7 +9,6 @@ import jwt from "jsonwebtoken";
 import { Vendors } from '../vendors/models'
 import { INTEGER } from 'sequelize/types'
 import { moviCred } from './relacion/model'
-import { moviCred } from './relacion/model'
 
 
 export async function getClient(req: Request, res: Response) {
