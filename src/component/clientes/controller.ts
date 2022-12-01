@@ -205,12 +205,12 @@ export async function updateCrediticio(req: Request, res: Response) {
 export async function addMovilidad(req: Request, res: Response) {
   try {
       const {id} = req.body
-      const {tipo, marca, modelo, año} = req.body
+      const {tipo, marca, modelo, año,permuta} = req.body
       const crediticio = await Crediticio.findByPk(id)
-      const newVehiculo = await Movilidad.create({tipo:tipo,marca:marca,modelo:modelo,año:año})
+      const newVehiculo = await Movilidad.create({tipo:tipo,marca:marca,modelo:modelo,año:año,permuta:permuta})
       const idvehiculo=newVehiculo.getDataValue("id")
       const s = await moviCred.create({crediticioId:id, MovilidadId:idvehiculo})
-      return res.json({ crediticio: crediticio, newVehiculo: newVehiculo, relacion:s  })
+      return res.json({ newVehiculo: newVehiculo })
   } catch (error) {
       return res.status(500).json({ message: error })
   }
