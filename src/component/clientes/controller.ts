@@ -206,8 +206,8 @@ export async function addMovilidad(req: Request, res: Response) {
   try {
       const {id} = req.body
       const {tipo, marca, modelo, año} = req.body
-      const crediticio = await Crediticio.findByPk(Number(id))
-      const newVehiculo = await Movilidad.create({tipo,marca,modelo,año})
+      const crediticio = await Crediticio.findByPk(id)
+      const newVehiculo = await Movilidad.create({tipo:tipo,marca:marca,modelo:modelo,año:año})
       const idvehiculo=newVehiculo.getDataValue("id")
       const s = await moviCred.create({crediticioId:id, MovilidadId:idvehiculo})
       return res.json({ crediticio: crediticio, newVehiculo: newVehiculo, relacion:s  })

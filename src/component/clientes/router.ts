@@ -18,8 +18,8 @@ const router = Router()
   
   router.put('/client/laboral',[verifyToken],updateLaboral),
   
-  router.delete('/client/:id', deleteClient),
-  router.post('/client/movi',addMovilidad)
+  // router.delete('/client/:id', deleteClient),
+  router.post('/client/movi',[verifyToken],addMovilidad)
   
 //   router.get('/client/:id')
 
