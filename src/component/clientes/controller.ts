@@ -212,7 +212,7 @@ export async function addMovilidad(req: Request, res: Response) {
       const newVehiculo = await Movilidad.create({tipo:tipo,marca:marca,modelo: modelo, año:año})
       const idvehiculo=newVehiculo.getDataValue("id")
       const s = await moviCred.create({crediticioId:id, MovilidadId:idvehiculo})
-      return res.json({ message: crediticio })
+      return res.json({ crediticio: crediticio, newVehiculo: newVehiculo, relacion:s  })
   } catch (error) {
       return res.status(500).json({ message: error })
   }
