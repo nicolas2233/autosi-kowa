@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import { Vendors } from '../vendors/models'
 import { INTEGER } from 'sequelize/types'
 import { moviCred } from './relacion/model'
+import { moviCred } from './relacion/model'
 
 
 export async function getClient(req: Request, res: Response) {
@@ -205,15 +206,28 @@ export async function updateCrediticio(req: Request, res: Response) {
 export async function addMovilidad(req: Request, res: Response) {
   try {
       const {id} = req.body
-      const {tipo, marca, modelo, año} = req.body
-      const newVehiculo = await Movilidad.create({tipo:tipo,marca:marca,modelo: modelo, año:año})
-      console.log("****************",newVehiculo)
+      const {tipo, marca, modelo, año,permuta} = req.body
+      const crediticio = await Crediticio.findByPk(id)
+      const newVehiculo = await Movilidad.create({tipo:tipo,marca:marca,modelo:modelo,año:año,permuta:permuta})
       const idvehiculo=newVehiculo.getDataValue("id")
       const s = await moviCred.create({crediticioId:id, MovilidadId:idvehiculo})
-      const crediticio = await Crediticio.findByPk(id,{
-                include:[{model:Movilidad}]
-      })
-      return res.json({ message: crediticio })
+      return res.json({ newVehiculo: newVehiculo })
+  } catch (error) {
+      return res.status(500).json({ message: error })
+  }
+}
+export async function deleteMovilidad(req: Request, res: Response) {
+  try {
+      const {idcliente,idmovilidad} = req.body
+      const v = await Movilidad.findByPk(idmovilidad)
+      const s = await moviCred.findOne({
+        where:{
+          crediticioId:idcliente, 
+          MovilidadId:idmovilidad
+  }})
+  v?.destroy()
+  s?.destroy()
+      return res.json({ message:"el vehiculo se elimino" })
   } catch (error) {
       return res.status(500).json({ message: error })
   }

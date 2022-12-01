@@ -19,6 +19,10 @@ export const Movilidad = sequelize.define('Movilidad',{
     año:{
         type: DataTypes.STRING,
     },
+    permuta:{
+        type: DataTypes.STRING,
+    },
+
 },{
     timestamps:false,
 })
