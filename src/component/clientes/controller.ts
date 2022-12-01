@@ -206,13 +206,12 @@ export async function addMovilidad(req: Request, res: Response) {
   try {
       const {id} = req.body
       const {tipo, marca, modelo, año} = req.body
+      const crediticio = await Crediticio.findByPk(id,{
+        include:[{model:Movilidad}]
+      })
       const newVehiculo = await Movilidad.create({tipo:tipo,marca:marca,modelo: modelo, año:año})
-      
       const idvehiculo=newVehiculo.getDataValue("id")
       const s = await moviCred.create({crediticioId:id, MovilidadId:idvehiculo})
-      const crediticio = await Crediticio.findByPk(id,{
-                include:[{model:Movilidad}]
-      })
       return res.json({ message: crediticio })
   } catch (error) {
       return res.status(500).json({ message: error })
