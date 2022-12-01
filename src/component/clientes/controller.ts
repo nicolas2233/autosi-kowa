@@ -215,6 +215,22 @@ export async function addMovilidad(req: Request, res: Response) {
       return res.status(500).json({ message: error })
   }
 }
+export async function deleteMovilidad(req: Request, res: Response) {
+  try {
+      const {idcliente,idmovilidad} = req.body
+      const v = await Movilidad.findByPk(idmovilidad)
+      const s = await moviCred.findOne({
+        where:{
+          crediticioId:idcliente, 
+          MovilidadId:idmovilidad
+  }})
+  v?.destroy()
+  s?.destroy()
+      return res.json({ message:"el vehiculo se elimino" })
+  } catch (error) {
+      return res.status(500).json({ message: error })
+  }
+}
 
 
 
