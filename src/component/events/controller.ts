@@ -110,8 +110,8 @@ export async function  deletedEvent(req: Request, res: Response) {
  export async function  updateEvent(req: Request, res: Response) {
     
      try {
-        const { id } = req.params
-         const {hora, nota, tipo, clienteId} = req.body
+        const { id } = req.body
+         const {hora, nota, tipo, clienteId, estado} = req.body
         const evento = await Event.findByPk(Number(id))
         if(hora!==null){
             evento?.setDataValue("hora",hora)
@@ -123,7 +123,10 @@ export async function  deletedEvent(req: Request, res: Response) {
             evento?.setDataValue("tipo",tipo)
         }
         if(clienteId!==null){
-            evento?.setDataValue("clienteId",clienteId)
+            evento?.setDataValue("cliente",clienteId)
+        }
+        if(estado!==null){
+            evento?.setDataValue("estado",estado)
         }
         evento?.save()
        res.json({message: "evento creado satisfactoriamente", event: evento})

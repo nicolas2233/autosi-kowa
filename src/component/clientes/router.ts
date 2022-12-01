@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { verifyToken } from "../../middlewares/verifysingup";
 
-import {createClient,deleteClient,getClient, updateClient, updateCrediticio, updateLaboral, updatePersonales} from './controller'
+import {addMovilidad, createClient,deleteClient,getClient, updateClient, updateCrediticio, updateLaboral, updatePersonales} from './controller'
 
 const router = Router()
 
@@ -17,9 +17,11 @@ const router = Router()
   router.put('/client/personal',[verifyToken],updatePersonales),
   
   router.put('/client/laboral',[verifyToken],updateLaboral),
+
+  router.post('/client/movi',addMovilidad),
   
   router.delete('/client/:id', deleteClient)
   
-//   router.get('/client/:id')
+
 
 export default router

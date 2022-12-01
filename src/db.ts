@@ -1,15 +1,15 @@
 import {Sequelize} from "sequelize";
 require('dotenv').config()
 
-  export const sequelize= new Sequelize(process.env.DATABASE_URL||'postgres://gyhhlhiwutoqcg:e80a203defb2f84ef5d90b2655c7ceb95c4a0704a564debed01ce6d153897432@ec2-44-195-132-31.compute-1.amazonaws.com:5432/d83luda9mhkob6',
-  {
-    dialectOptions:{
-        ssl:{
-                rejectUnauthorized:false
-        }
-    }
-}
- )
+//   export const sequelize= new Sequelize(process.env.DATABASE_URL||'postgres://gyhhlhiwutoqcg:e80a203defb2f84ef5d90b2655c7ceb95c4a0704a564debed01ce6d153897432@ec2-44-195-132-31.compute-1.amazonaws.com:5432/d83luda9mhkob6',
+//   {
+//     dialectOptions:{
+//         ssl:{
+//                 rejectUnauthorized:false
+//         }
+//     }
+// }
+//  )
 //     console.log("estoy en el else")
 //     const sequelize= new Sequelize({
 //     database:'daiutfsqr987da',
@@ -24,9 +24,9 @@ require('dotenv').config()
 //     }
 // })
 
-// export const sequelize = new Sequelize('Kowa-autosi','postgres','pili1804',{
-//     host:'localhost',
-//     dialect:'postgres',
-// })
+export const sequelize = new Sequelize('Kowa-autosi','postgres','pili1804',{
+    host:'localhost',
+    dialect:'postgres',
+})
 
 
