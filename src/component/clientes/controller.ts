@@ -8,6 +8,7 @@ import { Movilidad } from './movilidad/models'
 import jwt from "jsonwebtoken";
 import { Vendors } from '../vendors/models'
 import { INTEGER } from 'sequelize/types'
+import { moviCred } from './relacion/model'
 
 
 export async function getClient(req: Request, res: Response) {
@@ -202,22 +203,20 @@ export async function updateCrediticio(req: Request, res: Response) {
   }
 }
 export async function addMovilidad(req: Request, res: Response) {
-  // try {
-  //     const {idCliente} = req.body
-
-  //         const vendors = await Vendors.findByPk(idVendor)
-          
-  //         if(vendors!==null){
-  //                await vendors?.update({groupId:idGroup})  
-  //               return  res.json({ message: "vendedores agregados al gupo" })                 
-  //         }else{
-  //            return res.json({ message: "el vendedor no se encontro" })  
-  //         }
-
-    
-  // } catch (error) {
-  //     return res.status(500).json({ message: error })
-  // }
+  try {
+      const {id} = req.body
+      const {tipo, marca, modelo, año} = req.body
+      const newVehiculo = await Movilidad.create({tipo:tipo,marca:marca,modelo: modelo, año:año})
+      
+      const idvehiculo=newVehiculo.getDataValue("id")
+      const s = await moviCred.create({crediticioId:id, MovilidadId:idvehiculo})
+      const crediticio = await Crediticio.findByPk(id,{
+                include:[{model:Movilidad}]
+      })
+      return res.json({ message: crediticio })
+  } catch (error) {
+      return res.status(500).json({ message: error })
+  }
 }
 
 

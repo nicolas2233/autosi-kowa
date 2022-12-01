@@ -1,6 +1,7 @@
 import { sequelize } from "../../../db";
 import {DataTypes} from 'sequelize'
 import { Movilidad } from "../movilidad/models";
+import { moviCred } from "../relacion/model";
 
 export const Crediticio = sequelize.define('crediticio',{
     id:{
@@ -27,5 +28,5 @@ export const Crediticio = sequelize.define('crediticio',{
 
 // Crediticio.hasMany(Movilidad)
 // Movilidad.hasMany(Crediticio)
-Crediticio.belongsToMany(Movilidad, { through: 'moviCred' })
-Movilidad.belongsToMany(Crediticio, { through: 'moviCred' })
+Crediticio.belongsToMany(Movilidad, { through: moviCred })
+Movilidad.belongsToMany(Crediticio, { through: moviCred })
