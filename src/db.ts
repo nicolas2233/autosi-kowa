@@ -1,7 +1,7 @@
 import {Sequelize} from "sequelize";
 require('dotenv').config()
 
-  export const sequelize= new Sequelize(process.env.DATABASE_URL||'postgres://gyhhlhiwutoqcg:e80a203defb2f84ef5d90b2655c7ceb95c4a0704a564debed01ce6d153897432@ec2-44-195-132-31.compute-1.amazonaws.com:5432/d83luda9mhkob6',
+  export const sequelize= new Sequelize(process.env.DATABASE_URL||'postgresql://postgres:e1oihCrWqVjlOVqU6fCS@containers-us-west-54.railway.app:6986/railway',
   {
     dialectOptions:{
         ssl:{
