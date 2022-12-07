@@ -3,8 +3,8 @@ import { verifyToken } from "../../middlewares/verifysingup";
 import {getContrato, createContrato} from './controller'
 const router = Router()
 
-  router.get('/contrato',[verifyToken],getContrato),
+  router.get('/contrato',getContrato),
 
-  router.post('/contrato',[verifyToken], createContrato)
+  router.post('/contrato', createContrato)
 
 export default router

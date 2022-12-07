@@ -4,10 +4,10 @@ import { Contrato } from './model'
 
 export async function getContrato(req: Request, res: Response) {
     try {
-        const vendedor = req.headers["user-id"]
+        const vendedor = req.body
         const events = await Contrato.findAll({
-            where: {
-                vendedor: vendedor
+            where:{
+                vendedor:vendedor
             }
         })
         res.status(200).send(events)
@@ -19,7 +19,7 @@ export async function getContrato(req: Request, res: Response) {
 export async function createContrato(req: Request, res: Response) {
     try {
         const {numero, dia, pago, suscripcion, sellado,otorgado,adeudado,cliente} = req.body
-        const vendedor = req.headers["user-id"]
+        const vendedor = req.body
        
        
             const newContrato = await Contrato.create({
