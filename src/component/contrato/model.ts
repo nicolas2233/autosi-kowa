@@ -21,10 +21,10 @@ export const Contrato = sequelize.define('contrato',{
         type: DataTypes.STRING,       
     },
     sellado:{
-        type: DataTypes.INTEGER, 
+        type: DataTypes.STRING, 
     },
     otorgado:{
-        type: DataTypes.INTEGER, 
+        type: DataTypes.STRING, 
     },
     adeudado:{
         type: DataTypes.STRING, 
