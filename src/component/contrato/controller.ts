@@ -7,7 +7,7 @@ export async function getContrato(req: Request, res: Response) {
         const vendedor = req.headers["user-id"]
         const events = await Contrato.findAll({
             where: {
-                vendedor: vendedor
+                vendedor: vendedor?.toString()
             }
         })
         res.status(200).send(events)
@@ -28,7 +28,7 @@ export async function createContrato(req: Request, res: Response) {
                 pago,
                 suscripcion,
                 cliente,
-                vendedor: vendedor,
+                vendedor: vendedor?.toString(),
                 sellado,
                 otorgado,
                 adeudado
