@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyToken } from "../../middlewares/verifysingup";
-import {getEvent, createEvent,getEventTime, canceledEvent, deletedEvent, updateEvent} from './controller'
+import {getEvent, createEvent,getEventTime, canceledEvent, getAllEvent, deletedEvent, updateEvent} from './controller'
 const router = Router()
 
   router.get('/events',[verifyToken],getEvent),
@@ -12,9 +12,10 @@ const router = Router()
    router.put('/events/canceled',[verifyToken], canceledEvent),
   
    router.delete('/events',[verifyToken], deletedEvent),
-   
-   router.put('/events', updateEvent)
 
+   router.put('/events', updateEvent),
+
+   router.get('/events/all',[verifyToken],getAllEvent)
 
 
 export default router

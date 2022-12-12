@@ -15,6 +15,16 @@ export async function getEvent(req: Request, res: Response) {
         return res.sendStatus(500).json({ message: error })
     }
 }
+export async function getAllEvent(req: Request, res: Response) {
+    try {
+        const vendedor = req.headers["user-id"]
+        const events = await Event.findAll({
+        })
+        res.status(200).send(events)
+    } catch (error) {
+        return res.sendStatus(500).json({ message: error })
+    }
+}
 
 export async function createEvent(req: Request, res: Response) {
     try {
