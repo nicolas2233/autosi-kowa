@@ -27,14 +27,14 @@ export async function getAllContrato(req: Request, res: Response) {
 
 export async function createContrato(req: Request, res: Response) {
     try {
-        const {numero, dia, pago, suscripcion, sellado,otorgado,adeudado,cliente} = req.body
+        const {numeroContrato, dia, metodopago, suscripcion, sellado,otorgado,adeudado,cliente} = req.body
         const vendedor = req.headers["user-id"]
        
        
             const newContrato = await Contrato.create({
                 dia,
-                numero,
-                pago,
+                numeroContrato,
+                metodopago,
                 suscripcion,
                 cliente,
                 vendedor: vendedor?.toString(),
