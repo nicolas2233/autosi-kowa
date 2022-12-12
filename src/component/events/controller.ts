@@ -83,7 +83,7 @@ export async function getEventTime(req: Request, res: Response) {
         include:[{model:Cliente}],
         where:{
             vendedor:vendedor,
-            dia:fecha
+            dia:fecha.toString()
         }
     })
     res.status(200).send(events)
