@@ -15,6 +15,15 @@ export async function getContrato(req: Request, res: Response) {
         return res.sendStatus(500).json({ message: error })
     }
 }
+export async function getAllContrato(req: Request, res: Response) {
+    try {
+        const vendedor = req.headers["user-id"]
+        const events = await Contrato.findAll()
+        res.status(200).send(events)
+    } catch (error) {
+        return res.sendStatus(500).json({ message: error })
+    }
+}
 
 export async function createContrato(req: Request, res: Response) {
     try {

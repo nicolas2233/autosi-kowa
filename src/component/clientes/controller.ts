@@ -37,6 +37,27 @@ export async function getClient(req: Request, res: Response) {
     return res.status(500).json({message: error})
   }
 }
+export async function getAllClient(req: Request, res: Response) {
+  try {
+    const vendedor=req.headers["user-id"]
+    const cliente = await Carga.findAll({
+      include:[{
+        model:Cliente,
+          include:[{
+            model:Personales,
+              include:[{
+                  model:Crediticio,
+                        include:[{model:Movilidad}]
+                  },
+                  {model:Laboral}]
+          }]
+      }]
+    })
+     res.status(200).send(cliente)
+  } catch (error) {
+    return res.status(500).json({message: error})
+  }
+}
 
 export async function  createClient(req: Request, res: Response) {   
     try {

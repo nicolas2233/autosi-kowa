@@ -1,5 +1,5 @@
 import {Sequelize} from "sequelize";
-require('dotenv').config()
+const newLocal = require('dotenv').config();
 
 //   export const sequelize= new Sequelize(process.env.DATABASE_URL||'postgres://postgres:e1oihCrWqVjlOVqU6fCS@containers-us-west-54.railway.app:6986/railway',
 //   {//postgres:e1oihCrWqVjlOVqU6fCS@containers-us-west-54.railway.app:6986/railway

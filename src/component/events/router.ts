@@ -12,6 +12,7 @@ const router = Router()
    router.put('/events/canceled',[verifyToken], canceledEvent),
   
    router.delete('/events',[verifyToken], deletedEvent),
+   
    router.put('/events', updateEvent)
 
 
