@@ -1,4 +1,5 @@
 import {Request,Response} from 'express'
+import { and } from 'sequelize/types'
 import { Cliente } from '../clientes/cliente/models'
 import { Event } from './models'
 
@@ -73,18 +74,17 @@ export async function createEvent(req: Request, res: Response) {
 export async function getEventTime(req: Request, res: Response) {
     
     try {
+        const vendedor=req.headers["user-id"]
         const date = new Date   
         const day = date.getDate()
         const mes = date.getMonth()+1
         const año = date.getFullYear()
         const fecha = day+"/"+mes+"/"+año
-    const vendedor=req.headers["user-id"]
     const events = await Event.findAll({
-        include:[{model:Cliente}],
         where:{
-            vendedor:vendedor,
+            vendedor,
             dia:fecha.toString()
-        }
+        },
     })
     res.status(200).send(events)
     }catch (error) {
