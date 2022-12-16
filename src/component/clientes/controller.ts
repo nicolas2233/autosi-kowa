@@ -50,6 +50,7 @@ export async function getAllClient(req: Request, res: Response) {
       console.log("**********array de vendedores*******",e.getDataValue("id"))
       zeta.push(Number(e.getDataValue("id")))
     })
+
     const cliente = await Carga.findAll({
       where:{
         vendedor:[10,11]
@@ -67,12 +68,12 @@ export async function getAllClient(req: Request, res: Response) {
       }]
     })
     let beta: Model<any, any>[] =[]
-     cliente.forEach(e=>{
-    let i = zeta.indexOf(Number(e.getDataValue("vendedor")))
-    if(i!=-1){
-        beta.push(e)
+    for (let i = 0; i < cliente.length; i++) {
+      let e = zeta.indexOf(Number(cliente[i].getDataValue("vendedor")))
+      if(e!=-1){
+        beta.push(cliente[i])
     }
-     })
+    }
      res.status(200).send(beta)
   } catch (error) {
     return res.status(500).json({message: error})
