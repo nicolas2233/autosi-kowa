@@ -30,8 +30,8 @@ export async function signin(req: Request, res: Response) {
 }
 
 export async function signup(req: Request, res: Response) {
-  const gerente=req.headers["user-id"]
-  const { name, lastname, password, email, dni, phone, category } = req.body
+  const gerente1=req.headers["user-id"]
+  const { name, lastname, password, email, dni, phone, category,gerente } = req.body
   let catrol = category
   const rol = await Role.findOne({ where: { name: catrol } });
   if (rol === null) {
