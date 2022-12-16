@@ -55,7 +55,7 @@ export async function signup(req: Request, res: Response) {
     dni,
     phone,
     category: catrol,
-    gerente:gerente
+    gerente:gerente?.toString()
   })
   // const token = jwt.sign({ id: newVendors.getDataValue("id") }, secret.SECRET, {
   //   expiresIn: "3h"
