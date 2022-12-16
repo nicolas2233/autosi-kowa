@@ -47,7 +47,7 @@ export async function getAllClient(req: Request, res: Response) {
       attributes:["id"]
     })
     v.forEach(e=>{
-      console.log("**********array de vendedores*******",e)
+      console.log("**********array de vendedores*******",e.getDataValue("id"))
     })
     const cliente = await Carga.findAll({
       where:{
