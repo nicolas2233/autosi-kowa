@@ -7,7 +7,7 @@ import { Crediticio } from './crediticios/models'
 import { Movilidad } from './movilidad/models'
 import jwt from "jsonwebtoken";
 import { Vendors } from '../vendors/models'
-import { INTEGER, Op } from 'sequelize/types'
+import { INTEGER, Model, Op } from 'sequelize/types'
 import { moviCred } from './relacion/model'
 
 
@@ -43,18 +43,17 @@ export async function getAllClient(req: Request, res: Response) {
     const v = await Vendors.findAll({
       where:{
         gerente:gerente?.toString()
-      },
-      include:[{
-        model:Cliente
-      }]
+      }
     })
-    console.log("**********array de vendedores*******",v)
-    // v.forEach(e=>{
-    //   console.log("**********array de vendedores*******",e.getDataValue("id"))
-    //   beta.push(Number(e.getDataValue("id")))
-    // })
-   
+    let zeta: number[]=[]
+    v.forEach(e=>{
+      console.log("**********array de vendedores*******",e.getDataValue("id"))
+      zeta.push(Number(e.getDataValue("id")))
+    })
     const cliente = await Carga.findAll({
+      where:{
+        vendedor:[10,11]
+      },
       include:[{
         model:Cliente,
           include:[{
@@ -67,7 +66,14 @@ export async function getAllClient(req: Request, res: Response) {
           }]
       }]
     })
-     res.status(200).send(cliente)
+    let beta: Model<any, any>[] =[]
+     cliente.forEach(e=>{
+    let i = zeta.indexOf(Number(e.getDataValue("vendedor")))
+    if(i!=-1){
+        beta.push(e)
+    }
+     })
+     res.status(200).send(beta)
   } catch (error) {
     return res.status(500).json({message: error})
   }
