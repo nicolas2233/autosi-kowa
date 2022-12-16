@@ -49,7 +49,7 @@ export async function getAllClient(req: Request, res: Response) {
      
     v.forEach(e=>{
       console.log("**********array de vendedores*******",e.getDataValue("id"))
-      beta.push(e.getDataValue("id"))
+      beta.push(Number(e.getDataValue("id")))
     })
     console.log("**********array de vendedores*******",beta)
     const cliente = await Carga.findAll({
