@@ -8,7 +8,7 @@ if(!envFound){
 }
 async function main(){
     try {
-    await sequelize.sync({force: false, alter: false})
+    await sequelize.sync({force: false, alter: true})
     app.listen(app.get('port'))
     createRole()
     console.log('server listening on port: 3000')

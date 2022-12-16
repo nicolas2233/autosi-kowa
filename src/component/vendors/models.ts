@@ -27,6 +27,9 @@ export const Vendors = sequelize.define('vendors',{
     },
     category:{
         type: DataTypes.STRING,
+    },
+    gerente:{
+        type: DataTypes.STRING,
     }
 })
 

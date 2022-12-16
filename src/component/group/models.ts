@@ -12,6 +12,9 @@ export const Group = sequelize.define('group',{
     },
     lider:{
         type: DataTypes.STRING,
+    },
+    gerente:{
+        type: DataTypes.STRING,
     }
 })
 
