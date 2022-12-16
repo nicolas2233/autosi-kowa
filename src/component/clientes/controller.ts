@@ -54,7 +54,7 @@ export async function getAllClient(req: Request, res: Response) {
     console.log("**********array de vendedores*******",beta)
     const cliente = await Carga.findAll({
       where:{
-        vededor:["10","11","12"]
+        vededor:beta
       },
       include:[{
         model:Cliente,
