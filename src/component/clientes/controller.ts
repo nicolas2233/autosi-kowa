@@ -44,20 +44,17 @@ export async function getAllClient(req: Request, res: Response) {
       where:{
         gerente:gerente?.toString()
       },
+      include:[{
+        model:Cliente
+      }]
     })
-     var beta: any[] = []
-     
-    v.forEach(e=>{
-      console.log("**********array de vendedores*******",e.getDataValue("id"))
-      beta.push(Number(e.getDataValue("id")))
-    })
-    console.log("**********array de vendedores*******",beta)
+    console.log("**********array de vendedores*******",v)
+    // v.forEach(e=>{
+    //   console.log("**********array de vendedores*******",e.getDataValue("id"))
+    //   beta.push(Number(e.getDataValue("id")))
+    // })
+   
     const cliente = await Carga.findAll({
-      where:{
-        vededor:{
-          [Op.in]: beta
-        }
-      },
       include:[{
         model:Cliente,
           include:[{
