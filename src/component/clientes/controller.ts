@@ -7,7 +7,7 @@ import { Crediticio } from './crediticios/models'
 import { Movilidad } from './movilidad/models'
 import jwt from "jsonwebtoken";
 import { Vendors } from '../vendors/models'
-import { INTEGER } from 'sequelize/types'
+import { INTEGER, Op } from 'sequelize/types'
 import { moviCred } from './relacion/model'
 
 
@@ -54,7 +54,9 @@ export async function getAllClient(req: Request, res: Response) {
     console.log("**********array de vendedores*******",beta)
     const cliente = await Carga.findAll({
       where:{
-        vededor:beta
+        vededor:{
+          [Op.in]: beta
+        }
       },
       include:[{
         model:Cliente,
