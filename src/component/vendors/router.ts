@@ -4,7 +4,7 @@ import {isAdmin, isGerente, verifyToken} from '../../middlewares/verifysingup'
 const router = Router()
 
 //[verifyToken,isAdmin]
-router.get('/vendors',getVendors), //trae todos los clientes
+router.get('/vendors',[verifyToken],getVendors), //trae todos los clientes
  
 router.put('/vendors/update',updateVendors), // modificar un vendedor
   

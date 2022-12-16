@@ -6,7 +6,7 @@ const router = Router()
 
   router.post('/auth/signin',auth.signin),
 
-  router.post('/auth/signup', auth.signup)
+  router.post('/auth/signup',[verifyToken], auth.signup)
   
 
 

@@ -30,6 +30,7 @@ export async function signin(req: Request, res: Response) {
 }
 
 export async function signup(req: Request, res: Response) {
+  const gerente=req.headers["user-id"]
   const { name, lastname, password, email, dni, phone, category } = req.body
   let catrol = category
   const rol = await Role.findOne({ where: { name: catrol } });
@@ -53,7 +54,8 @@ export async function signup(req: Request, res: Response) {
     email,
     dni,
     phone,
-    category: catrol
+    category: catrol,
+    gerente:gerente
   })
   // const token = jwt.sign({ id: newVendors.getDataValue("id") }, secret.SECRET, {
   //   expiresIn: "3h"
