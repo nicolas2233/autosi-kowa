@@ -7,6 +7,7 @@ import { Group } from '../group/models'
 export async function getVendors(req: Request, res: Response) {
   try {   
     const gerente = req.headers["user-id"]
+    console.log("*****************",gerente)
     const ger= await Vendors.findByPk(Number(gerente))
     if(ger?.getDataValue("category")===4){
          const vendors = await Vendors.findAll({
@@ -20,7 +21,7 @@ export async function getVendors(req: Request, res: Response) {
         const vendors = await Vendors.findAll() 
        return res.status(200).send(vendors)
    }
-     
+   return res.status(200).send({Message:"no se encontro vendedores"})
        
     } catch (error) {
         return res.status(500).json({ message: error })

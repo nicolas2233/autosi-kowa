@@ -47,6 +47,7 @@ export async function signup(req: Request, res: Response) {
   if(mail!==null){
    return res.json({ message: "el vendedor ya existe" })
   }
+  console.log("*********************",gerente1)
   const newVendors = await Vendors.create({
     name,
     lastname,
