@@ -7,9 +7,6 @@ import { Group } from '../group/models'
 export async function getVendors(req: Request, res: Response) {
   try {   
     const gerente = req.headers["user-id"]
-    console.log("********id gerente*********",gerente)
-    const ger= await Vendors.findByPk(Number(gerente))
-    console.log("#######vendedor############",ger)
          const vendors = await Vendors.findAll({
             where:{
                 gerente:gerente?.toString()
