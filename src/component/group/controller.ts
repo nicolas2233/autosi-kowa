@@ -31,14 +31,15 @@ export async function getGroup(req: Request, res: Response) {
 export async function  createGroup(req: Request, res: Response) { 
     try {
         const {name,idLider,miembros} = req.body
-
+        const gerente = req.headers["user-id"]
         const log = await Vendors.findByPk(idLider?.toString())
         if(log?.getDataValue("groupId")===null){
          var count: any[]=[]
          var n=0
          const newGroup = await Group.create({
             name,
-            lider:log.getDataValue("id")
+            lider:log.getDataValue("id"),
+            gerente:gerente?.toString()
         })  
         //  miembros.forEach( async (e:string) => {
         //     let n=0

@@ -3,8 +3,8 @@
  import {getGroup,updateGroup,createGroup,deleteGroup,addVendors, getGroupForOne, deleteVendor} from './controller'
  const router = Router()
 
-   router.get('/group',getGroup)
-   router.post('/group', createGroup),
+   router.get('/group',[verifyToken],getGroup)
+   router.post('/group',[verifyToken], createGroup),
    router.put('/group',updateGroup),
    router.post('/group/forOne',getGroupForOne)
    router.delete('/group', deleteGroup),
