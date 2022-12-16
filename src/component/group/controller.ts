@@ -6,8 +6,6 @@ import { Vendors } from '../vendors/models'
 export async function getGroup(req: Request, res: Response) {
     try { 
     const gerente = req.headers["user-id"]
-    const ger= await Vendors.findByPk(Number(gerente))
-    if(ger?.getDataValue("category")===4){
     const group = await Group.findAll({
         where:{
           gerente:gerente?.toString()
@@ -16,22 +14,14 @@ export async function getGroup(req: Request, res: Response) {
      }
      )
       res.status(200).send(group)
-    }
-    if(ger?.getDataValue("category")===5){
-        const group = await Group.findAll({
-            include:[{model:Vendors}]
-         }
-         )
-          res.status(200).send(group)
-        }
     } catch (error) {
         return res.status(500).json({ message: error })
     }
 }
 export async function  createGroup(req: Request, res: Response) { 
     try {
-        const {name,idLider,miembros} = req.body
-        const gerente = req.headers["user-id"]
+        const {name,idLider,miembros,gerente} = req.body
+        const gerente1 = req.headers["user-id"]
         const log = await Vendors.findByPk(idLider?.toString())
         if(log?.getDataValue("groupId")===null){
          var count: any[]=[]
