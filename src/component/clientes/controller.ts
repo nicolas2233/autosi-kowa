@@ -40,6 +40,23 @@ export async function getClient(req: Request, res: Response) {
 export async function getAllClient(req: Request, res: Response) {
   try {
     const gerente=req.headers["user-id"]
+    const a = await Vendors.findByPk(Number(gerente))
+    if(a?.getDataValue("category")==="5"){
+      const cliente = await Carga.findAll({
+        include:[{
+          model:Cliente,
+            include:[{
+              model:Personales,
+                include:[{
+                    model:Crediticio,
+                          include:[{model:Movilidad}]
+                    },
+                    {model:Laboral}]
+            }]
+        }]
+      })
+      res.status(200).send(cliente)
+    }
     const v = await Vendors.findAll({
       where:{
         gerente:gerente?.toString()
@@ -49,7 +66,6 @@ export async function getAllClient(req: Request, res: Response) {
     v.forEach(e=>{  
       zeta.push(Number(e.getDataValue("id")))
     })
-    console.log("**********array de vendedores*******",zeta)
     const cliente = await Carga.findAll({
       include:[{
         model:Cliente,

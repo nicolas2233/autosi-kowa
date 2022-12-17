@@ -20,6 +20,11 @@ export async function getEvent(req: Request, res: Response) {
 export async function getAllEvent(req: Request, res: Response) {
     try {
         const gerente=req.headers["user-id"]
+        const a = await Vendors.findByPk(Number(gerente))
+        if(a?.getDataValue("category")==="5"){
+            const event = await Event.findAll()
+            res.status(200).send(event)
+        }
         const v = await Vendors.findAll({
       where:{
         gerente:gerente?.toString()
