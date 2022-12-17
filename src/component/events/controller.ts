@@ -25,21 +25,20 @@ export async function getAllEvent(req: Request, res: Response) {
         gerente:gerente?.toString()
       }
     })
-    let zeta: number[]=[]
+    var zeta: number[]=[]
     v.forEach(e=>{  
       zeta.push(Number(e.getDataValue("id")))
     })
-    const events = await Event.findAll({
-        })
+    const events = await Event.findAll()
 
-   let beta: Model<any, any>[] =[]
+   var beta: Model<any, any>[] =[]
         for (let i = 0; i < events.length; i++) {
           let e = zeta.indexOf(Number(events[i].getDataValue("vendedor")))
           if(e!=-1){
             beta.push(events[i])
         }
         }
-        res.status(200).send(events)
+        res.status(200).send(beta)
     } catch (error) {
         return res.sendStatus(500).json({ message: error })
     }
