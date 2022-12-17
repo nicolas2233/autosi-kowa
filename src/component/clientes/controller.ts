@@ -41,7 +41,7 @@ export async function getAllClient(req: Request, res: Response) {
   try {
     const gerente=req.headers["user-id"]
     const a = await Vendors.findByPk(Number(gerente))
-    if(a?.getDataValue("category")==="5"){
+    if(a?.getDataValue("category")===5){
       const cliente = await Carga.findAll({
         include:[{
           model:Cliente,

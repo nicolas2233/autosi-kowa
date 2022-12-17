@@ -21,7 +21,7 @@ export async function getAllContrato(req: Request, res: Response) {
     try {
         const gerente=req.headers["user-id"]
         const a = await Vendors.findByPk(Number(gerente))
-        if(a?.getDataValue("category")==="5"){
+        if(a?.getDataValue("category")===5){
             const contrato = await Contrato.findAll()
             res.status(200).send(contrato)
         }
