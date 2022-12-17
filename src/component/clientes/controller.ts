@@ -46,15 +46,11 @@ export async function getAllClient(req: Request, res: Response) {
       }
     })
     let zeta: number[]=[]
-    v.forEach(e=>{
-      console.log("**********array de vendedores*******",e.getDataValue("id"))
+    v.forEach(e=>{  
       zeta.push(Number(e.getDataValue("id")))
     })
-
+    console.log("**********array de vendedores*******",zeta)
     const cliente = await Carga.findAll({
-      where:{
-        vendedor:[10,11]
-      },
       include:[{
         model:Cliente,
           include:[{
