@@ -1,5 +1,7 @@
 import {Request,Response} from 'express'
+import { Model } from 'sequelize/types'
 import { Cliente } from '../clientes/cliente/models'
+import { Vendors } from '../vendors/models'
 import { Contrato } from './model'
 
 export async function getContrato(req: Request, res: Response) {
@@ -17,9 +19,27 @@ export async function getContrato(req: Request, res: Response) {
 }
 export async function getAllContrato(req: Request, res: Response) {
     try {
-        const vendedor = req.headers["user-id"]
-        const events = await Contrato.findAll()
-        res.status(200).send(events)
+        const gerente=req.headers["user-id"]
+        const v = await Vendors.findAll({
+      where:{
+        gerente:gerente?.toString()
+      }
+    })
+    var zeta: number[]=[]
+    v.forEach(e=>{  
+      zeta.push(Number(e.getDataValue("id")))
+    })
+   
+    const contrato = await Contrato.findAll()
+   var beta: Model<any, any>[] =[]
+        for (let i = 0; i < contrato.length; i++) {
+          let e = zeta.indexOf(Number(contrato[i].getDataValue("vendedor")))
+          if(e!=-1){
+            beta.push(contrato[i])
+        }
+        }
+        res.status(200).send(beta)
+        
     } catch (error) {
         return res.sendStatus(500).json({ message: error })
     }
