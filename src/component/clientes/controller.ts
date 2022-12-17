@@ -55,7 +55,7 @@ export async function getAllClient(req: Request, res: Response) {
             }]
         }]
       })
-      res.status(200).send(cliente)
+     return res.status(200).send(cliente)
     }
     const v = await Vendors.findAll({
       where:{
@@ -86,7 +86,7 @@ export async function getAllClient(req: Request, res: Response) {
         beta.push(cliente[i])
     }
     }
-     res.status(200).send(beta)
+   return  res.status(200).send(beta)
   } catch (error) {
     return res.status(500).json({message: error})
   }
