@@ -1,6 +1,7 @@
 import {Request,Response} from 'express'
-import { and } from 'sequelize/types'
+import { and, Model } from 'sequelize/types'
 import { Cliente } from '../clientes/cliente/models'
+import { Vendors } from '../vendors/models'
 import { Event } from './models'
 
 export async function getEvent(req: Request, res: Response) {
@@ -18,9 +19,26 @@ export async function getEvent(req: Request, res: Response) {
 }
 export async function getAllEvent(req: Request, res: Response) {
     try {
-        const vendedor = req.headers["user-id"]
-        const events = await Event.findAll({
+        const gerente=req.headers["user-id"]
+        const v = await Vendors.findAll({
+      where:{
+        gerente:gerente?.toString()
+      }
+    })
+    let zeta: number[]=[]
+    v.forEach(e=>{  
+      zeta.push(Number(e.getDataValue("id")))
+    })
+    const events = await Event.findAll({
         })
+
+   let beta: Model<any, any>[] =[]
+        for (let i = 0; i < events.length; i++) {
+          let e = zeta.indexOf(Number(events[i].getDataValue("vendedor")))
+          if(e!=-1){
+            beta.push(events[i])
+        }
+        }
         res.status(200).send(events)
     } catch (error) {
         return res.sendStatus(500).json({ message: error })
