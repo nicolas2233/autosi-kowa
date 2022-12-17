@@ -56,7 +56,7 @@ export async function getAllClient(req: Request, res: Response) {
         }]
       })
      return res.status(200).send(cliente)
-    }
+    }else{
     const v = await Vendors.findAll({
       where:{
         gerente:gerente?.toString()
@@ -87,6 +87,7 @@ export async function getAllClient(req: Request, res: Response) {
     }
     }
    return  res.status(200).send(beta)
+  }
   } catch (error) {
     return res.status(500).json({message: error})
   }

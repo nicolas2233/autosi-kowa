@@ -24,7 +24,7 @@ export async function getAllContrato(req: Request, res: Response) {
         if(a?.getDataValue("category")===5){
             const contrato = await Contrato.findAll()
           return  res.status(200).send(contrato)
-        }
+        }else{
         const v = await Vendors.findAll({
       where:{
         gerente:gerente?.toString()
@@ -43,8 +43,8 @@ export async function getAllContrato(req: Request, res: Response) {
             beta.push(contrato[i])
         }
         }
-        res.status(200).send(beta)
-        
+        return res.status(200).send(beta)
+    }
     } catch (error) {
         return res.sendStatus(500).json({ message: error })
     }
