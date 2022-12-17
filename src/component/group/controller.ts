@@ -13,7 +13,8 @@ export async function getGroup(req: Request, res: Response) {
         include:[{model:Vendors}]
      }
      )
-      res.status(200).send(group)
+     const ger = await Vendors.findByPk(Number(gerente))
+      res.status(200).send({grupo:group, gerente:ger})
     } catch (error) {
         return res.status(500).json({ message: error })
     }
