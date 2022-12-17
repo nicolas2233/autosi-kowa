@@ -160,7 +160,7 @@ export async function getGroupForOne(req: Request, res: Response) {
      }
      )
      const ger = await Vendors.findByPk(group?.getDataValue("gerente"))
-      res.status(200).send({group, ger})
+      res.status(200).send({group:group, gerente:ger})
     } catch (error) {
         return res.status(500).json({ message: error })
     }
