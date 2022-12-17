@@ -13,8 +13,8 @@ export async function getGroup(req: Request, res: Response) {
         include:[{model:Vendors}]
      }
      )
-     const ger = await Vendors.findByPk(Number(gerente))
-      res.status(200).send({grupo:group, gerente:ger})
+    
+      res.status(200).send(group)
     } catch (error) {
         return res.status(500).json({ message: error })
     }
@@ -159,7 +159,8 @@ export async function getGroupForOne(req: Request, res: Response) {
         include:[{model:Vendors}]
      }
      )
-      res.status(200).send(group)
+     const ger = await Vendors.findByPk(group?.getDataValue("gerente"))
+      res.status(200).send({grupo:group, gerente:ger})
     } catch (error) {
         return res.status(500).json({ message: error })
     }
