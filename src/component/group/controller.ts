@@ -8,7 +8,9 @@ export async function getGroup(req: Request, res: Response) {
     const gerente = req.headers["user-id"]
     const a = await Vendors.findByPk(Number(gerente))
     if(Number(a?.getDataValue("category"))===5){
-        const group = await Group.findAll()
+        const group = await Group.findAll({
+            include:[{model:Vendors}]
+        })
         return res.status(200).send(group)
     }else{
     const group = await Group.findAll({
