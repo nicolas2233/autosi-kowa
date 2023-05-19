@@ -24,10 +24,10 @@ const newLocal = require('dotenv').config();
     }
 })
 
-// export const sequelize2 = new Sequelize('Kowa-autosi','postgres','pili1804',{
+// export const sequelize = new Sequelize('Kowa-autosi','postgres','pili1804',{
 //     host:'localhost',
-//     dialect:'postgres',
-    
+//     dialect:'postgres', 
 // })
+
 
 

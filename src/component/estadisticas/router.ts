@@ -1,9 +1,11 @@
 import { Router } from "express";
-import {getContratos} from './controller'
+import { verifyToken } from "../../middlewares/verifysingup";
+import {getContratos,getCargas,getEventos,getContratosVendors} from './controller'
 const router = Router()
 
-  router.get('/sta/contratos',getContratos)
-
-
+  router.post('/sta/cargas',[verifyToken],getCargas)
+  router.post('/sta/contratos',[verifyToken],getContratos)
+  router.post('/sta/eventos',[verifyToken],getEventos)
+  router.post('/sta/venCargas',[verifyToken],getContratosVendors)
 
 export default router

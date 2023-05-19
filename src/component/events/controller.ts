@@ -1,5 +1,5 @@
 import {Request,Response} from 'express'
-import { and, Model } from 'sequelize/types'
+import { and, Model, Op } from 'sequelize'
 import { Cliente } from '../clientes/cliente/models'
 import { Vendors } from '../vendors/models'
 import { Event } from './models'
@@ -17,6 +17,7 @@ export async function getEvent(req: Request, res: Response) {
         return res.sendStatus(500).json({ message: error })
     }
 }
+
 export async function getAllEvent(req: Request, res: Response) {
     try {
         const gerente=req.headers["user-id"]
@@ -52,42 +53,42 @@ export async function getAllEvent(req: Request, res: Response) {
 
 export async function createEvent(req: Request, res: Response) {
     try {
-        const { dia, hora, tipo, nota, clienteId } = req.body
+        const { dia, hora, tipo, nota, clienteId,estado } = req.body
         const vendedor = req.headers["user-id"]
         const date = new Date
         const day = date.getDate()
         const mes = date.getMonth()
         const año = date.getFullYear()
         const fecha = day + "/" + mes + "/" + año
-        console.log(day)
         const cliente = await Cliente.findByPk(clienteId)
+
         const e = await Event.findOne({
             where: {
-                dia: dia,
-                hora: hora
+                [Op.and]: [
+                    { vendedor:vendedor},
+                    { dia: dia },
+                    { hora: hora }
+                  ]
             }
         })
-        if (e !== null) {
-            return res.json({ message: "en ese dia ya tienes un evento" })
-        }
-        if (cliente !== null) {
+        console.log(">>>>>>>>>>>>>>>>>>",e)
+        console.log("<<<<<<<DIA:",dia,">>>>>>>>>>")
+        console.log("<<<<<<<HORA:",hora,">>>>>>>>>>")
+        if (e === null || e === undefined) {
             const newEvent = await Event.create({
-                dia,
-                hora,
+                dia: dia,
+                hora: hora,
                 tipo,
                 nota,
                 cliente: clienteId,
                 vendedor: vendedor,
-                estado: "activo"
-
+                estado: estado
+                
             })
-            //const eventid = newEvent.getDataValue("id")
-            //await cliente.setDataValue("event_Id", eventid)
-            //cliente.save()
             return res.json({ message: "evento creado satisfactoriamente", newEvent: newEvent })
         }
-        return res.json({ message: "el usuario no se encontro" })
-
+        
+        return res.json({ message: "en ese dia ya tienes un evento" })
     } catch (error) {
         return res.sendStatus(500).json({ message: error })
     }
@@ -143,7 +144,7 @@ export async function  deletedEvent(req: Request, res: Response) {
  export async function  updateEvent(req: Request, res: Response) {
     
      try {
-        const { id } = req.body
+        const { id, } = req.body
          const {hora, nota, tipo, clienteId, estado} = req.body
         const evento = await Event.findByPk(Number(id))
         if(hora!==null){
@@ -168,5 +169,24 @@ export async function  deletedEvent(req: Request, res: Response) {
        return res.status(500).json({message: error})
     }
   
- }
+}
+
+
+export async function  updateStateEvent(req: Request, res: Response) {
+    
+    try {
+       const { id, } = req.body
+        const { estado} = req.body
+       const evento = await Event.findByPk(Number(id))
+       if(estado!==null){
+           evento?.setDataValue("estado",estado)
+       }
+       evento?.save()
+      res.json({message: "estado actualizado", event: evento})
+       
+    } catch (error) {
+      return res.status(500).json({message: error})
+   }
+ 
+}
 
