@@ -100,17 +100,21 @@ export async function getEventTime(req: Request, res: Response) {
     try {
         const vendedor=req.headers["user-id"]
         const date = new Date   
-        const day = date.getDate()
+        let day = date.getDate()
+        const dia=day.toString().length===1?"0"+day.toString():day
         const mes = date.getMonth()+1
+        const month=mes.toString().length===1?"0"+mes.toString():mes
         const año = date.getFullYear()
-        const fecha = day+"/"+mes+"/"+año
+        const fecha = dia+"/"+month+"/"+año
+        console.log(fecha,vendedor)
     const events = await Event.findAll({
         where:{
-            vendedor,
-            dia:fecha.toString()
+            dia:fecha.toString(),
+            vendedor:vendedor
         },
     })
-    res.status(200).send(events)
+    console.log(events)
+    res.status(200).json(events)
     }catch (error) {
          return res.sendStatus(500).json({message: error})
     }
