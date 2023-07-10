@@ -3,7 +3,57 @@ import { and, Model, Op } from 'sequelize'
 import { Cliente } from '../clientes/cliente/models'
 import { Vendors } from '../vendors/models'
 import { Event } from './models'
+import nodemailer from 'nodemailer';
+const sendmail = require("sendmail")();
 
+ const enviarMail = async(mail:any,events:any) =>{
+
+   const config={
+    host: 'smtp.gmail.com',
+    port:587,
+    secure:false,
+    auth: {
+        user: "maxidisilvestro@gmail.com",
+        pass: "kjbwnllcjxphfgsu",
+    }
+   }
+
+
+//    const cardsHTML = events.map((item:any) => `
+//    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+//      <h2>Tipo: ${item.tipo}</h2>
+//      <p>Hora: ${item.hora}:00 Hs</p>
+//      <p>Cliente: ${item.clienteNom} ${item.clienteApe}</p>
+//      <p>Nota: ${item.nota}</p>
+//    </div>
+//  `).join('');
+
+ const cardsHTML =`
+ <h1>Eventos del dia: ${events[0].fecha} </h1>
+ ${events.map((item:any) => `
+   <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+   <h2>Cliente: ${item.clienteNom} ${item.clienteApe}</h2>
+   <p>Hora: ${item.hora}:00 Hs</p>
+   <p>Tipo: ${item.tipo}</p>
+     <p>Nota: ${item.nota}</p>
+   </div>
+ `).join('')}
+`;
+
+   const mailOptions = {
+    from: "maxidisilvestro@gmail.com",
+    to: mail,
+    subject: "Autosi eventos",
+    html:cardsHTML,
+    //JSON.stringify(events),
+  };
+    const transporter = nodemailer.createTransport(config);
+    const info = await transporter.sendMail(mailOptions)
+
+    console.log(info)
+}
+
+//'kjbwnllcjxphfgsu'
 export async function getEvent(req: Request, res: Response) {
     try {
         const vendedor = req.headers["user-id"]
@@ -106,14 +156,41 @@ export async function getEventTime(req: Request, res: Response) {
         const month=mes.toString().length===1?"0"+mes.toString():mes
         const año = date.getFullYear()
         const fecha = dia+"/"+month+"/"+año
-        console.log(fecha,vendedor)
+        
+        const vend = await Vendors.findOne({
+            where:{
+                id:vendedor,  
+            },
+        })
+       const email= vend?.getDataValue("email")
     const events = await Event.findAll({
         where:{
             dia:fecha.toString(),
             vendedor:vendedor
         },
     })
-    console.log(events)
+      if(events.length!=0){
+        const listid=[]
+        const arrayemail=[]
+        for (let i = 0; i < events.length; i++) {
+            const element = events[i].getDataValue("cliente");
+            listid.push(element)
+        }
+        const clientes = await Cliente.findAll({
+            where: {
+              id: {
+                [Op.in]: listid,
+              },
+            },
+          });
+
+          for (let i = 0; i < clientes.length; i++) {
+              const element={fecha:events[i].getDataValue("dia"),hora:events[i].getDataValue("hora"),clienteNom:clientes[i].getDataValue("nombre"),clienteApe:clientes[i].getDataValue("apellido"),tipo:events[i].getDataValue("tipo"),nota:events[i].getDataValue("nota")};
+              arrayemail.push(element)
+            }
+            console.log(">>>>>>>>>>>>",arrayemail)
+            enviarMail(email,arrayemail)
+        }
     res.status(200).json(events)
     }catch (error) {
          return res.sendStatus(500).json({message: error})
