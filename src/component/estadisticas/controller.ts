@@ -23,7 +23,7 @@ export async function getCargas(req: Request, res: Response) {
           gerente:gerente?.toString()
         }})
        const id=vens.map(item=>(item.getDataValue("id")))
-       const { rows } = await entrada(id,1)
+       const { rows } = await entrada(id,1,0)
        const events = rows.map((row) => {
          const { createdAt } = row.toJSON();
          const month = createdAt.getMonth() + 1;
@@ -34,7 +34,7 @@ export async function getCargas(req: Request, res: Response) {
    return res.status(200).json({ data: obj2 });
     }else{
     const { id } = req.body;
-    const { rows } = await entrada(id,1)
+    const { rows } = await entrada(id,1,0)
     const events = rows.map((row) => {
       const { createdAt } = row.toJSON();
       const month = createdAt.getMonth() + 1;
@@ -61,7 +61,7 @@ export async function getContratos(req: Request, res: Response) {
           gerente:gerente?.toString()
         }})
        const id=vens.map(item=>(item.getDataValue("id")))
-       const { rows } = await entrada(id,3)
+       const { rows } = await entrada(id,3,0)
        const events = rows.map((row) => {
          const { createdAt } = row.toJSON();
          const month = createdAt.getMonth() + 1;
@@ -72,7 +72,7 @@ export async function getContratos(req: Request, res: Response) {
    return res.status(200).json({ data: obj2 });
     }else{
     const { id } = req.body;
-    const { rows } = await entrada(id,3)
+    const { rows } = await entrada(id,3,0)
     const events = rows.map((row) => {
       const { createdAt } = row.toJSON();
       const month = createdAt.getMonth() + 1;
@@ -97,7 +97,7 @@ export async function getEventos(req: Request, res: Response) {
           gerente:gerente?.toString()
         }})
        const id=vens.map(item=>(item.getDataValue("id")))
-       const { rows } = await entrada(id,2)
+       const { rows } = await entrada(id,2,gerente)
        const events = rows.map((row) => {
          const { createdAt } = row.toJSON();
          const month = createdAt.getMonth() + 1;
@@ -108,7 +108,7 @@ export async function getEventos(req: Request, res: Response) {
    return res.status(200).json({ data: obj2 });
     }else{
        const { id } = req.body;
-    const { rows } = await entrada(id,2)
+    const { rows } = await entrada(id,2,gerente)
     const events = rows.map((row) => {
       const { createdAt } = row.toJSON();
       const month = createdAt.getMonth() + 1;
@@ -166,23 +166,42 @@ function createChartData(data: { [year: string]: { [month: string]: { [day: stri
   return objetoFinal;
 }
 
-async function entrada(data: any, tipo: number) {
+async function entrada(data: any, tipo: number,gerente:any) {
   let whereClause: any = {};
 
   if (data) {
     if (Array.isArray(data)) {
+      if(tipo==2){
+        data.push(gerente)
       const a = data.map(item=>(item.toString()))
+      whereClause = { tipo: 'entrevista',
+      [Op.and]: [
+        { vendedor: { [Op.in]: a } }
+        // Otras condiciones aquí...
+      ] };
+      }else{
+        const a = data.map(item=>(item.toString()))
       whereClause = { vendedor: { [Op.in]: a } };
+      }
     } else {
-      whereClause = { vendedor: data.toString() };
+      if(tipo===2){
+        whereClause = { vendedor: data.toString(),tipo: 'entrevista' };
+      }else{
+        whereClause = { vendedor: data.toString() };
+      }
+
     }
   }
+  if (!data && tipo==2) {
+    whereClause = { tipo: 'entrevista' };
+  }
+
 
   switch (tipo) {
     case 1:
       return await Carga.findAndCountAll({ where: whereClause });
     case 2:
-      return await Event.findAndCountAll({ where: whereClause });
+      return await Event.findAndCountAll({ where:whereClause});
     case 3:
       return await Contrato.findAndCountAll({ where: whereClause });
     default:
