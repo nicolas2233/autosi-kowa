@@ -54,7 +54,6 @@ export async function getCargas(req: Request, res: Response) {
 export async function getContratos(req: Request, res: Response) {
   try {
     const gerente=req.headers["user-id"]
-    console.log("eventos",gerente)
     const a = await Vendors.findByPk(Number(gerente))
     if(Number(a?.getDataValue("category"))===3||Number(a?.getDataValue("category"))===4){
         const vens = await Vendors.findAll({where:{
@@ -138,33 +137,66 @@ function agruparValores(objeto: { date: any[] }): ObjetoFinal[] {
   return createChartData(result);
 }
 
+// function createChartData(data: { [year: string]: { [month: string]: { [day: string]: number } } }): ObjetoFinal[] {
+//   const objetoFinal: ObjetoFinal[] = [];
+//   let maxMonth = 0;
+  
+//   // Encontrar el mes más alto existente
+//   for (const anio in data) {
+//     for (const mes in data[anio]) {
+//       const mesNum = parseInt(mes);
+//       if (mesNum > maxMonth) {
+//         maxMonth = mesNum;
+//       }
+//     }
+//   }
+  
+//   // Recorrer solo hasta el mes más alto existente
+//   for (const anio in data) {
+//     for (let mesNum = 1; mesNum <= maxMonth; mesNum++) {
+//       const mes = mesNum.toString();
+//       const valoresMes = data[anio][mes] || {};
+//       const totalMes = Object.values(valoresMes).reduce((acc, curr) => acc + curr, 0);
+//       const diasMes = Object.keys(valoresMes);
+//       const contratosMes = Object.values(valoresMes);
+//       objetoFinal.push({ anio, mes, total: totalMes, dias: diasMes, contratos: contratosMes });
+//     }
+//   }
+//   return objetoFinal;
+// }
+
+
 function createChartData(data: { [year: string]: { [month: string]: { [day: string]: number } } }): ObjetoFinal[] {
   const objetoFinal: ObjetoFinal[] = [];
-  let maxMonth = 0;
-  
-  // Encontrar el mes más alto existente
+
   for (const anio in data) {
-    for (const mes in data[anio]) {
-      const mesNum = parseInt(mes);
-      if (mesNum > maxMonth) {
-        maxMonth = mesNum;
+      let maxMonthForYear = 0;
+
+      // Encontrar el mes más alto existente para el año en curso
+      for (const mes in data[anio]) {
+          const mesNum = parseInt(mes);
+          if (mesNum > maxMonthForYear) {
+              maxMonthForYear = mesNum;
+          }
       }
-    }
+    
+      // Recorrer solo hasta el mes más alto registrado en el año en curso
+      for (let mesNum = 1; mesNum <= maxMonthForYear; mesNum++) {
+          const mes = mesNum.toString() // Asegurarse de que siempre tenga dos dígitos
+          const valoresMes = data[anio][mes] || {};
+          const totalMes = Object.values(valoresMes).reduce((acc, curr) => acc + curr, 0);
+          const diasMes = Object.keys(valoresMes);
+          const contratosMes = Object.values(valoresMes);
+          objetoFinal.push({ anio, mes, total: totalMes, dias: diasMes, contratos: contratosMes });
+      }
   }
-  
-  // Recorrer solo hasta el mes más alto existente
-  for (const anio in data) {
-    for (let mesNum = 1; mesNum <= maxMonth; mesNum++) {
-      const mes = mesNum.toString();
-      const valoresMes = data[anio][mes] || {};
-      const totalMes = Object.values(valoresMes).reduce((acc, curr) => acc + curr, 0);
-      const diasMes = Object.keys(valoresMes);
-      const contratosMes = Object.values(valoresMes);
-      objetoFinal.push({ anio, mes, total: totalMes, dias: diasMes, contratos: contratosMes });
-    }
-  }
+
   return objetoFinal;
 }
+
+
+
+
 
 async function entrada(data: any, tipo: number,gerente:any) {
   let whereClause: any = {};
@@ -203,6 +235,7 @@ async function entrada(data: any, tipo: number,gerente:any) {
     case 2:
       return await Event.findAndCountAll({ where:whereClause});
     case 3:
+      whereClause.adeudado = "0";
       return await Contrato.findAndCountAll({ where: whereClause });
     default:
       throw new Error('Tipo de búsqueda inválido');

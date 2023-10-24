@@ -3,7 +3,7 @@ import { Model } from 'sequelize/types'
 import { Cliente } from '../clientes/cliente/models'
 import { Vendors } from '../vendors/models'
 import { Contrato } from './model'
-
+import { Pago } from '../cobranza/model'
 export async function getContrato(req: Request, res: Response) {
     try {
         const vendedor = req.headers["user-id"]
@@ -49,7 +49,6 @@ export async function getAllContrato(req: Request, res: Response) {
         return res.sendStatus(500).json({ message: error })
     }
 }
-
 export async function createContrato(req: Request, res: Response) {
     try {
         const {numeroContrato, dia, metodopago, suscripcion, sellado,otorgado,adeudado,cliente} = req.body
@@ -73,6 +72,42 @@ export async function createContrato(req: Request, res: Response) {
         return res.sendStatus(500).json({ message: error })
     }
 
+}
+export async function modificarContratro(req: Request, res: Response){
+    const{ dia, numeroContrato, pago, metodopago } = req.body
+    const vendedor = req.headers["user-id"]
+
+
+    const contrato = await Contrato.findOne({
+        where:{
+            numeroContrato
+        }
+    })
+    const saldo=contrato?.getDataValue('adeudado')
+    const nuevoSaldo=Number(saldo)-Number(pago)
+    contrato?.setDataValue('adeudado',nuevoSaldo)
+    contrato?.save()
+    const newPago = await Pago.create({
+        dia,
+        numeroContrato,
+        metodopago,
+        vendedor: vendedor?.toString(),
+        pago
+    })
+    return res.json({ message: "contrato creado satisfactoriamente", newContrato: newPago })
+}
+export async function getPagos(req: Request, res: Response) {
+    try {
+        const vendedor = req.headers["user-id"]
+        const events = await Pago.findAll({
+            where: {
+                vendedor: vendedor?.toString()
+            }
+        })
+        res.status(200).send(events)
+    } catch (error) {
+        return res.sendStatus(500).json({ message: error })
+    }
 }
 
 
