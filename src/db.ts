@@ -10,13 +10,31 @@ const newLocal = require('dotenv').config();
 //     }
 // }
 //  )
-   export const sequelize= new Sequelize({
+
+
+
+//    export const sequelize= new Sequelize({
+//     database:'railway',
+//     username:'postgres',
+//     password:'e1oihCrWqVjlOVqU6fCS',
+//     host:'containers-us-west-54.railway.app',
+//     dialect:'postgres',
+//     port:6986,
+//     dialectOptions:{
+//         ssl:{
+//                 rejectUnauthorized:false
+//         }
+//     }
+// })
+
+
+export const sequelize= new Sequelize({
     database:'railway',
     username:'postgres',
-    password:'e1oihCrWqVjlOVqU6fCS',
-    host:'containers-us-west-54.railway.app',
+    password:'C2f315b6d6DccEb1agF26EfDED5dddA4',
+    host:'roundhouse.proxy.rlwy.net',
     dialect:'postgres',
-    port:6986,
+    port:34492,
     dialectOptions:{
         ssl:{
                 rejectUnauthorized:false
